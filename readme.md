@@ -1,4 +1,4 @@
-# Sujet AS : Analyse des algorithmes de tris
+# Sujet AS : Analyse des algorithmes de tri
 
 ## Description
 
