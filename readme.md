@@ -16,9 +16,9 @@ C'est un projet d'université fait en collaboration avec [Tom David](https://git
 
 + ANT : Ouvrir le terminal à la racine du projet et lancez la commande `ant run`.
 
-+ WINDOWS : Ouvrir le terminal dans le dossier dist/ et lancez l'exécutable `run.bat`.
++ WINDOWS : Ouvrir le terminal dans le dossier `dist/` et lancez l'exécutable `run.bat`.
 
-+ LINUX : Ouvrir le terminal dans le dossier dist/ et lancez l'exécutable `run.sh`.
++ LINUX : Ouvrir le terminal dans le dossier `dist/` et lancez l'exécutable `run.sh`.
 
 ## Autres commandes ant
 
