@@ -107,7 +107,6 @@ public class GeneratorWithEntropy {
         }
         double[] results = this.disorder();
         double disorder = order ? results[0] : results[1];
-        System.out.println("Entropie : " + this.entropy + " | Disorder : " + disorder);
         int swaps = (int) (disorder * tab.length);
 
         int[] result = Arrays.copyOf(tab, tab.length);

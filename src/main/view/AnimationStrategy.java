@@ -102,7 +102,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
      * Dessine une forme géométrique.
      *
      * @param g l'objet Graphics.
-     * @param i l'indice de l'élément dans le tableau de trie.
+     * @param i l'indice de l'élément dans le tableau de tri.
      */
     abstract void drawGeometricShape(Graphics g, int i);
 

@@ -5,6 +5,9 @@ import main.model.*;
 import main.model.sort.*;
 import main.view.*;
 
+import java.io.*;
+import java.util.*;
+
 /**
  * Représente le point d'entrée de l'application.
  *
@@ -12,6 +15,21 @@ import main.view.*;
  * @version 1.0
  */
 public class Main {
+
+    private static int SIZE;
+    private static double ENTROPY;
+
+    static {
+        try {
+            Properties prop = new Properties();
+            prop.load(new FileInputStream("config.properties"));
+            SIZE = Integer.parseInt(prop.getProperty("SIZE"));
+            ENTROPY = Double.parseDouble(prop.getProperty("ENTROPY"));
+        } catch (IOException ex) {
+            SIZE = 100;
+            ENTROPY = 1.0;
+        }
+    }
 
     /**
      * Crée une liste de taille n.
@@ -33,10 +51,11 @@ public class Main {
      * @param args arguments de la ligne de commande.
      */
     public static void main(String[] args) {
-        int[] data = Main.createList(100);
-        GeneratorWithEntropy rgs = new GeneratorWithEntropy(1.0);
+        int[] data = Main.createList(SIZE);
+        GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY);
         SortingList sl = new SortingList(new QuickSort(), "Quick", data, rgs.sortWithEntropy(data, true));
         GUI g = new GUI(sl);
+        System.out.println("ARRAY SIZE: " + SIZE + " | ENTROPY: " + ENTROPY);
     }
     
 }

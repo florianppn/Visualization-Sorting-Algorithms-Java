@@ -58,10 +58,8 @@ public class GUI extends JFrame {
     public void showActionPanel() {
         JPanel actionPanel = new JPanel();
         JPanel menuPanel = new JPanel();
-        JPanel containerPanel = new JPanel();
         actionPanel.setBackground(Color.WHITE);
         menuPanel.setBackground(Color.WHITE);
-        containerPanel.setBackground(Color.WHITE);
         actionPanel.setLayout(new GridLayout(1, 3));
 
         ControllerSortMenu csm = new ControllerSortMenu(this.sl, this);
@@ -71,7 +69,6 @@ public class GUI extends JFrame {
         menuPanel.add(cam);
 
         actionPanel.add(menuPanel);
-        actionPanel.add(containerPanel);
         actionPanel.add(new ControllerSlider(this.animation));
         actionPanel.add(new ControllerButtons(this.sl, csm, cam));
 
