@@ -52,4 +52,4 @@ Icones conçu par [www.freepik.com](https://fr.freepik.com/)
 
 ## Auteurs
 
-[Tom David](https://github.com/kitoutou999), Emilien Huron et Florian Pépin.
+[Tom David](https://github.com/kitoutou999), Emilien Huron et [Florian Pépin](https://github.com/florianppn).
