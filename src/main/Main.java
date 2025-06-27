@@ -34,8 +34,8 @@ public class Main {
      */
     public static void main(String[] args) {
         int[] data = Main.createList(100);
-        GeneratorWithEntropy rgs = new GeneratorWithEntropy(0.7);
-        SortingList sl = new SortingList(new QuickSort(), "Quick", data, rgs.sortWithEntropy(data, true, true));
+        GeneratorWithEntropy rgs = new GeneratorWithEntropy(1.0);
+        SortingList sl = new SortingList(new QuickSort(), "Quick", data, rgs.sortWithEntropy(data, true));
         GUI g = new GUI(sl);
     }
     

@@ -5,8 +5,8 @@ import java.util.*;
 /**
  * Représente un générateur de tri aléatoire basé sur l'entropie.
  * 
- * @author Tom David et Florian Pépin
- * @version 1.0
+ * @author Florian Pépin
+ * @version 2.0
  */
 public class GeneratorWithEntropy {
 
@@ -62,10 +62,9 @@ public class GeneratorWithEntropy {
      * Calculer la probabilité de mélange pour un certain niveau d'entropie.
      * Via une recherche dichotomique.
      *
-     * @param entropy le niveau d'entropie.
      * @return un tableau contenant les deux probabilités de mélange.
      */
-    private double[] disorder(double entropy) {
+    private double[] disorder() {
         double left = 0.001;
         double right = 0.999;
         double precision = 0.001;
@@ -75,13 +74,13 @@ public class GeneratorWithEntropy {
             double mid = (left + right) / 2;
             double value = this.calculate(mid);
 
-            if (Math.abs(value - entropy) < precision) {
+            if (Math.abs(value - this.entropy) < precision) {
                 result[0] = mid;
                 result[1] = 1 - mid;
                 return result;
             }
 
-            if (value < entropy) {
+            if (value < this.entropy) {
                 left = mid;
             } else {
                 right = mid;
@@ -89,8 +88,8 @@ public class GeneratorWithEntropy {
         }
 
         double bestX = (left + right) / 2;
-        result[0] = bestX;
-        result[1] = 1 - bestX;
+        result[0] = this.roundDecimal(bestX, 3);
+        result[1] = this.roundDecimal(1 - bestX, 3);;
         return result;
     }
 
@@ -98,56 +97,31 @@ public class GeneratorWithEntropy {
      * Trier un tableau de données avec un certain niveau d'entropie.
      * Fonctionne avec n'importe quel nombre de symboles (binaire, ternaire, etc.)
      *
-     * @param unsortedData le tableau de données à trier.
+     * @param tab le tableau de données à trier.
      * @param order indique l'ordre de tri (true pour utiliser la première probabilité, false pour la seconde).
      * @return le tableau de données partiellement mélangées selon le niveau d'entropie.
      */
-    public int[] sortWithEntropy(int[] unsortedData, boolean order, boolean strict) {
-        if (unsortedData == null || unsortedData.length <= 1 || entropy < 0 || entropy > 1) {
-            return unsortedData;
+    public int[] sortWithEntropy(int[] tab, boolean order) {
+        if (tab.length <= 1 || entropy < 0 || entropy > 1) {
+            return tab;
         }
+        double[] results = this.disorder();
+        double disorder = order ? results[0] : results[1];
+        System.out.println("Entropie : " + this.entropy + " | Disorder : " + disorder);
+        int swaps = (int) (disorder * tab.length);
 
-        double[] probabilities = this.disorder(entropy);
-        int choice = order ? 0 : 1;
-        double proba = strict ? probabilities[choice] : probabilities[choice]*2;
-        double probability = this.roundDecimal(proba, 3);
-
-        int positionsToChange = (int) (probability * unsortedData.length);
-
-        // Crée la liste d'indices melange
-        List<Integer> availableIndices = new ArrayList<>(unsortedData.length);
-        for (int i = 0; i < unsortedData.length; i++) {
-            availableIndices.add(i);
+        int[] result = Arrays.copyOf(tab, tab.length);
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < result.length; i++) {
+            indices.add(i);
         }
-
-        Collections.shuffle(availableIndices, this.random);
-
-        // Prend uniquement le nombre d'indices à changer dans la liste availableIndices
-        int[] indicesToChange = new int[positionsToChange];
-        for (int i = 0; i < positionsToChange; i++) {
-            indicesToChange[i] = availableIndices.get(i);
-        }
-
-        // copie original
-        int[] result = Arrays.copyOf(unsortedData, unsortedData.length);
-
-        // Pour chaque indicesToChange, remplacer par une valeur différente
-        int changedCount = 0;
-        int index = 0;
-
-        while (changedCount < positionsToChange && index < result.length) {
-            int posToChange = indicesToChange[changedCount];
-            int originalValue = result[posToChange];
-            int newValue = result[index];
-
-            // 2 valeurs sont different
-            if (newValue != originalValue) {
-                result[posToChange] = newValue;
-                changedCount++;
-            }
-
-            index++;
-
+        Collections.shuffle(indices, this.random);
+        for (int i = 0; i < swaps; i++) {
+            int idx1 = indices.get(i);
+            int idx2 = indices.get((i + 1) % result.length);
+            int tmp = result[idx1];
+            result[idx1] = result[idx2];
+            result[idx2] = tmp;
         }
         return result;
     }
