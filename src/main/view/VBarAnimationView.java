@@ -26,7 +26,7 @@ public class VBarAnimationView extends AnimationStrategy {
         int barWidth = width / size;
         int barHeight = (int) ((this.sl.getGeneratorData()[i] / (double) size) * (height - 2));
         
-        int x = i * (width) / size + (width) / (2 * size)-5;
+        int x = (i * (width) / size + (width) / (2 * size)) - 5;
         int y = height - barHeight;
 
         g.fillRect(x, y, barWidth, barHeight);

@@ -28,7 +28,7 @@ public class PyramidAnimationView extends AnimationStrategy {
         int baseWidth = (int) ((value / (double) size) * (width - 2));
         int x1 = (width - baseWidth) / 2;
         int x2 = x1 + baseWidth;
-        int y = i * baseHeight;
+        int y = (i * baseHeight) + 50;
         g.drawLine(x1, y, x2, y);
     }
 
