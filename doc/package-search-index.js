@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"main.swing"},{"l":"main.swing.controller"},{"l":"main.swing.generator"},{"l":"main.swing.model"},{"l":"main.swing.model.sort"},{"l":"main.swing.utils"},{"l":"main.swing.view"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"main"},{"l":"main.controller"},{"l":"main.generator"},{"l":"main.model"},{"l":"main.model.sort"},{"l":"main.utils"},{"l":"main.view"}];updateSearchResults();
