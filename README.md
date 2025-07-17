@@ -2,7 +2,8 @@
 
 ## Description
 
-C'est un projet d'université fait en collaboration avec [Tom David](https://github.com/kitoutou999) et Emilien Huron.
+Le but de ce projet universitaire est d'analyser et de visualiser divers algorithmes de tri. 
+Notre objectif est de fournir une interface de visualisation permettant d'observer leur exécution en temps réel.
 
 ## Fonctionalités
 
@@ -50,6 +51,8 @@ Ce projet est sous licence [MIT](./LICENSE.md)
 
 Icones conçu par [www.freepik.com](https://fr.freepik.com/)
 
-## Auteurs
+## Contributeurs
 
-[Tom David](https://github.com/kitoutou999), Emilien Huron et [Florian Pépin](https://github.com/florianppn).
++ [Tom David](https://github.com/kitoutou999)
+
++ Emilien Huron
