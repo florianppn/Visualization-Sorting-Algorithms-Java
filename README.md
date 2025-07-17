@@ -3,7 +3,7 @@
 ## Description
 
 Le but de ce projet universitaire est d'analyser et de visualiser divers algorithmes de tri. 
-Notre objectif est de fournir une interface de visualisation permettant d'observer leur exécution en temps réel.
+Notre objectif est de fournir une interface de visualisation permettant d'observer leur exécution.
 
 ## Fonctionalités
 
