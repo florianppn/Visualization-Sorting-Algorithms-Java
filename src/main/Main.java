@@ -55,7 +55,6 @@ public class Main {
         GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY);
         SortingList sl = new SortingList(new QuickSort(), "Quick", data, rgs.sortWithEntropy(data, true));
         GUI g = new GUI(sl);
-        System.out.println("ARRAY SIZE: " + SIZE + " | ENTROPY: " + ENTROPY);
     }
     
 }
