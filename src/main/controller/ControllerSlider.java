@@ -5,6 +5,7 @@ import main.view.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.*;
 
 /**
  * Représente le slider de contrôle de la vitesse de l'animation.
@@ -21,7 +22,12 @@ public class ControllerSlider extends JPanel implements ChangeListener {
     public ControllerSlider(AnimationStrategy as) {
         super();
         this.as = as;
-        this.speedSlider = new JSlider(1, 10);
+        this.speedSlider = new JSlider(1, 11);
+        Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
+        labelTable.put(1, new JLabel("rapide"));
+        labelTable.put(6, new JLabel("normal"));
+        labelTable.put(11, new JLabel("lent"));
+        this.speedSlider.setLabelTable(labelTable);
         this.speedSlider.setPaintTrack(true); 
         this.speedSlider.setPaintTicks(true); 
         this.speedSlider.setPaintLabels(true); 

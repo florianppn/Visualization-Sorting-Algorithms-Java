@@ -15,7 +15,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public abstract class AnimationStrategy extends JPanel implements ModelListener {
 
-    protected static int SLEEP = 5;
+    protected static int SLEEP = 6;
     protected SortingList sl;
     protected String eventType;
     protected int count;
