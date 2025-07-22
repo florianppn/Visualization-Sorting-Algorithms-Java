@@ -14,6 +14,7 @@ public class PigeonholeSort implements SortingStrategy {
     
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         int min = sl.getElement(0);
         int max = sl.getElement(0);
@@ -40,6 +41,8 @@ public class PigeonholeSort implements SortingStrategy {
                 sl.set(index++, num);
             }
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

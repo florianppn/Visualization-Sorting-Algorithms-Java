@@ -17,11 +17,13 @@ import java.util.*;
 public class ControllerSlider extends JPanel implements ChangeListener {
 
     private AnimationStrategy as;
+    private StatisticView sv;
     private JSlider speedSlider;
     
-    public ControllerSlider(AnimationStrategy as) {
+    public ControllerSlider(AnimationStrategy as, StatisticView sv) {
         super();
         this.as = as;
+        this.sv = sv;
         this.speedSlider = new JSlider(1, 11);
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         labelTable.put(1, new JLabel("fast"));
@@ -44,7 +46,8 @@ public class ControllerSlider extends JPanel implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         if (e.getSource() instanceof JSlider) {
             int sleep = ((JSlider) e.getSource()).getValue();
-            as.setSleep(sleep);
+            this.as.setSleep(sleep);
+            this.sv.setSleep(sleep);
         }
     }
     

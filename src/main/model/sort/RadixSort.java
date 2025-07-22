@@ -12,6 +12,7 @@ public class RadixSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         int max = this.getMax(sl);
 
@@ -21,6 +22,8 @@ public class RadixSort implements SortingStrategy {
             countingSort(sl, n, exp);
             exp *= 10; // Passer à la position de chiffre suivante
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
     /**

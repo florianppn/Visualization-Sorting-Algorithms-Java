@@ -12,6 +12,7 @@ public class CocktailShakerSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         boolean echange = true;
         int start = 0;
@@ -38,6 +39,8 @@ public class CocktailShakerSort implements SortingStrategy {
             }
             start++;
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

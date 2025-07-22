@@ -19,7 +19,6 @@ public class ControllerButtons extends JPanel implements ActionListener {
     private SortingList sortingList;
     private ControllerSortMenu sortMenu;
     private ControllerAnimationMenu animationMenu;
-    private Thread sortingThread;
     private JButton sortButton;
     private JButton reloadButton;
 
@@ -105,18 +104,12 @@ public class ControllerButtons extends JPanel implements ActionListener {
      * Lance le tri.
      */
     private void run() {
-        this.sortingThread = new Thread(() -> {
-            try {
-                this.setMenusEnabled(false);
-                this.sortButton.setEnabled(false);
-                this.reloadButton.setEnabled(true);
-                this.sortingList.sort();
-                this.setMenusEnabled(true);
-            } catch (Exception ex) {
-                this.setMenusEnabled(true);
-            }
-        });
-        this.sortingThread.start();
+        this.setMenusEnabled(false);
+        this.sortButton.setEnabled(false);
+        this.reloadButton.setEnabled(true);
+        Thread sortingThread = new Thread(this.sortingList);
+        sortingThread.start();
+        this.setMenusEnabled(true);
     }
 
     @Override
@@ -130,7 +123,6 @@ public class ControllerButtons extends JPanel implements ActionListener {
                     break;
                 case "RELOAD":
                     this.reloadButton.setEnabled(false);
-                    if (this.sortingThread != null) this.sortingThread.interrupt();
                     this.sortingList.reload();
                     this.sortButton.setEnabled(true);
                     break;

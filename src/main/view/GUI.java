@@ -17,11 +17,19 @@ public class GUI extends JFrame {
     
     private SortingList sl;
     private AnimationStrategy animation;
+    private StatisticView statisticView;
     
     public GUI(SortingList sl) {
         super("Sorting Algorithms");
         this.sl = sl;
         this.animation = new VBarAnimationView(sl);
+        this.statisticView = new StatisticView(sl);
+        Thread t1 = new Thread(this.animation);
+        Thread t2 = new Thread(this.statisticView);
+        t1.setDaemon(true);
+        t2.setDaemon(true);
+        t1.start();
+        t2.start();
 
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +44,6 @@ public class GUI extends JFrame {
      * @param a La nouvelle stratégie d'animation.
      */
     public void setAnimation(AnimationStrategy a) {
-        this.sl.removeModelListener(this.animation);
         this.animation = a;
         this.refresh();
     }
@@ -69,7 +76,7 @@ public class GUI extends JFrame {
         menuPanel.add(cam);
 
         actionPanel.add(menuPanel);
-        actionPanel.add(new ControllerSlider(this.animation));
+        actionPanel.add(new ControllerSlider(this.animation, this.statisticView));
         actionPanel.add(new ControllerButtons(this.sl, csm, cam));
 
         this.add(actionPanel, BorderLayout.NORTH);
@@ -82,7 +89,7 @@ public class GUI extends JFrame {
         JPanel sortPanel = new JPanel();
         sortPanel.setBackground(Color.BLACK);
         sortPanel.setLayout(new BorderLayout());
-        sortPanel.add(new StatisticView(this.sl), BorderLayout.NORTH);
+        sortPanel.add(this.statisticView, BorderLayout.NORTH);
         sortPanel.add(this.animation, BorderLayout.CENTER);
         this.add(sortPanel, BorderLayout.CENTER);
     }

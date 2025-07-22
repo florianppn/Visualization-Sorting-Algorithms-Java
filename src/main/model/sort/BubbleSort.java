@@ -12,6 +12,7 @@ public class BubbleSort implements SortingStrategy {
     
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         int temp;
         boolean swapped;
@@ -33,6 +34,8 @@ public class BubbleSort implements SortingStrategy {
                 break;
             }
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

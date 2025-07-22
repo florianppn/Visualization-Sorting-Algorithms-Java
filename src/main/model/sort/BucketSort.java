@@ -14,6 +14,7 @@ public class BucketSort implements SortingStrategy {
     
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         if (n <= 0) return;
 
@@ -48,7 +49,8 @@ public class BucketSort implements SortingStrategy {
                 sl.set(index++, num);
             }
         }
-
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

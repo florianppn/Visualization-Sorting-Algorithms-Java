@@ -53,7 +53,7 @@ public class Main {
     public static void main(String[] args) {
         int[] data = Main.createList(SIZE);
         GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY);
-        SortingList sl = new SortingList(new QuickSort(), "Quick", data, rgs.sortWithEntropy(data, true));
+        SortingList sl = new SortingList(new QuickSort(), "Quick", rgs.sortWithEntropy(data, true));
         GUI g = new GUI(sl);
     }
     

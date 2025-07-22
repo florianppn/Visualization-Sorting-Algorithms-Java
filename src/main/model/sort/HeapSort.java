@@ -12,6 +12,7 @@ public class HeapSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         this.buildMaxHeap(sl, n);
         // Extraire les éléments un par un du tas
@@ -19,6 +20,8 @@ public class HeapSort implements SortingStrategy {
             sl.swap(0, i);
             this.heapify(sl, i, 0);
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
     /**

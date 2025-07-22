@@ -1,9 +1,10 @@
 package main.model;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import main.model.sort.*;
-import main.utils.*;
+
 
 /**
  * Représente une liste triable.
@@ -11,126 +12,111 @@ import main.utils.*;
  * @author Florian Pépin
  * @version 1.0
  */
-public class SortingList extends AbstractListenableModel {
+public class SortingList implements Runnable {
 
     private SortingStrategy sortingStrategy;
-    private int[] data; //data triées avant la modification par le générateur.
-    private int[] generatorData; //data du générateur
-    private final int[] originalData; // sauvegarde des data du générateur.
-    private int size;
-    private int current1;
-    private int current2;
-    private long delay;
+    private BlockingQueue<int[]> dataBuffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<Integer> current1Buffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<Integer> current2Buffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<SortState> sortStateBuffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<String> eventTypeBuffer = new LinkedBlockingQueue<>();
+    private int[] generatorData;
+    private final int[] originalData;
     private int comparisons;
     private int arrayAccess;
+    private long delay;
     private String sortName;
-    private long startTime;
+    private int size;
 
-    public SortingList(SortingStrategy sortingStrategy, String sortName, int[] data, int[] generatorData) {
+    public SortingList(SortingStrategy sortingStrategy, String sortName, int[] generatorData) {
         super();
         this.sortingStrategy = sortingStrategy;
-        this.data = data;
         this.generatorData = generatorData;
         this.originalData = Arrays.copyOf(generatorData, generatorData.length);
-        this.size = this.data.length;
-        this.current1 = -1;
-        this.current2 = -1;
-        this.delay = 0;
         this.comparisons = 0;
         this.arrayAccess = 0;
+        this.delay = 0;
         this.sortName = sortName;
-        this.startTime = 0;
+        this.size = generatorData.length;
+
+        this.setDataBuffer(generatorData.clone());
+        this.setCurrent1Buffer(-1);
+        this.setCurrent2Buffer(-1);
+        this.setEventTypeBuffer("init");
+        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
     }
 
-    /**
-     * Retourne les données de la liste.
-     *
-     * @return Les données de la liste.
-     */
-    public int[] getData() {
-        return this.data;
-    }
-
-    /**
-     * Retourne les données du générateur.
-     *
-     * @return Les données du générateur.
-     */
     public int[] getGeneratorData() {
         return this.generatorData;
     }
 
-    /**
-     * Retourne l'élément à l'indice i.
-     *
-     * @param i L'indice de l'élément.
-     * @return L'élément à l'indice i.
-     */
     public Integer getElement(int i) {
         this.comparisons++;
         this.arrayAccess++;
         return this.generatorData[i];
     }
 
-    /**
-     * Retourne l'indice de l'élément à l'indice i.
-     *
-     * @return L'indice de l'élément à l'indice i.
-     */
-    public int getCurrent1() {
-        return current1;
+    public int[] takeDataBuffer() {
+        try {
+            return this.dataBuffer.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return null;
     }
 
-    /**
-     * Retourne l'indice de l'élément à l'indice i.
-     *
-     * @return L'indice de l'élément à l'indice i.
-     */
-    public int getCurrent2() {
-        return current2;
+    public int takeCurrent1Buffer() {
+        try {
+            return this.current1Buffer.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return -1;
     }
 
-    /**
-     * Retourne le délai du tri.
-     *
-     * @return Le délai du tri.
-     */
+    public int takeCurrent2Buffer() {
+        try {
+            return this.current2Buffer.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return -1;
+    }
+
+    public String takeEventTypeBuffer() {
+        try {
+            return this.eventTypeBuffer.take();
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
+        }
+        return "error";
+    }
+
     public long getDelay() {
         return this.delay;
     }
 
-    /**
-     * Retourne le nombre de comparaisons.
-     *
-     * @return Le nombre de comparaisons.
-     */
     public int getComparisons() {
         return this.comparisons;
     }
 
-    /**
-     * Retourne le nombre d'accès au tableau.
-     *
-     * @return Le nombre d'accès au tableau.
-     */
     public int getArrayAccess() {
         return this.arrayAccess;
     }
 
-    /**
-     * Retourne le nom de la stratégie de tri.
-     *
-     * @return le nom de la stratégie de tri.
-     */
     public String getSortName() {
         return this.sortName;
     }
 
-    /**
-     * Retourne la taille de la liste.
-     *
-     * @return La taille de la liste.
-     */
+    public SortState takeSortStateBuffer() {
+        try {
+            return this.sortStateBuffer.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return null;
+    }
+
     public int getSize() {
         return this.size;
     }
@@ -141,28 +127,31 @@ public class SortingList extends AbstractListenableModel {
      * @param sortingStrategy La nouvelle stratégie de tri.
      */
     public void setSortingStrategy(SortingStrategy sortingStrategy) {
-        this.fireChange("step");
         this.sortingStrategy = sortingStrategy;
     }
 
-    /**
-     * Modifie le premier élément courant.
-     *
-     * @param current1 L'indice du premier élément courant.
-     */
-    public void setCurrent1(int current1) {
-        this.fireChange("step");
-        this.current1 = current1;
+    public void setDataBuffer(int[] data) {
+        this.dataBuffer.offer(data.clone());
     }
 
-    /**
-     * Modifie le deuxième élément courant.
-     *
-     * @param current2 L'indice du deuxième élément courant.
-     */
-    public void setCurrent2(int current2) {
-        this.fireChange("step");
-        this.current2 = current2;
+    public void setCurrent1Buffer(int current1) {
+        this.current1Buffer.offer(current1);
+    }
+
+    public void setCurrent2Buffer(int current2) {
+        this.current2Buffer.offer(current2);
+    }
+
+    public void setEventTypeBuffer(String eventType) {
+        this.eventTypeBuffer.offer(eventType);
+    }
+
+    public void setSortStateBuffer(SortState sortState) {
+        this.sortStateBuffer.offer(sortState);
+    }
+
+    public void setDelay(long delay) {
+        this.delay = delay;
     }
 
     /**
@@ -174,8 +163,11 @@ public class SortingList extends AbstractListenableModel {
     public void set(int i, int value) {
         this.generatorData[i] = value;
         this.arrayAccess++;
-        this.setCurrent2(i);
-        this.fireChange("step");
+        this.setDataBuffer(this.generatorData.clone());
+        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
+        this.setCurrent1Buffer(-1);
+        this.setCurrent2Buffer(i);
+        this.setEventTypeBuffer("step");
     }
 
     /**
@@ -190,23 +182,23 @@ public class SortingList extends AbstractListenableModel {
             this.generatorData[i] = this.generatorData[j];
             this.generatorData[j] = tmp;
             this.arrayAccess += 2;
-            this.setCurrent1(i);
-            this.setCurrent2(j);
-            this.fireChange("step");
+            this.setDataBuffer(this.generatorData.clone());
+            this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
+            this.setCurrent1Buffer(i);
+            this.setCurrent2Buffer(j);
+            this.setEventTypeBuffer("step");
         }
     }
 
-    /**
-     * Trie la liste.
-     */
-    public void sort() {
+    @Override
+    public void run() {
         this.resetData();
-        this.startTime = System.currentTimeMillis();
         this.sortingStrategy.sortingAlgorithm(this);
-        long endTime = System.currentTimeMillis();
-        this.delay = (endTime - this.startTime);
-        this.fireChange("end");
-        this.startTime = 0;
+        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, this.delay));
+        this.setDataBuffer(this.generatorData.clone());
+        this.setCurrent1Buffer(-1);
+        this.setCurrent2Buffer(-1);
+        this.setEventTypeBuffer("end");
     }
 
     /**
@@ -214,20 +206,7 @@ public class SortingList extends AbstractListenableModel {
      */
     public void resetData() {
         this.generatorData = Arrays.copyOf(this.originalData, this.originalData.length);
-    }
-
-    /**
-     * Vérifie si la liste est triée.
-     *
-     * @return true si la liste est triée, false sinon.
-     */
-    public boolean isSorted() {
-        for (int i = 0; i < this.generatorData.length - 1; i++) {
-            if (this.generatorData[i] > this.generatorData[i + 1]) {
-                return false;
-            }
-        }
-        return true;
+        this.dataBuffer.clear();
     }
 
     /**
@@ -238,7 +217,15 @@ public class SortingList extends AbstractListenableModel {
         this.delay = 0;
         this.comparisons = 0;
         this.arrayAccess = 0;
-        this.fireChange("step");
+        this.sortStateBuffer.clear();
+        this.current1Buffer.clear();
+        this.current2Buffer.clear();
+        this.dataBuffer.clear();
+        this.setDataBuffer(generatorData.clone());
+        this.setCurrent1Buffer(-1);
+        this.setCurrent2Buffer(-1);
+        this.setEventTypeBuffer("init");
+        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
     }
 
     /**

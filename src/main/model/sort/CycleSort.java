@@ -12,6 +12,7 @@ public class CycleSort implements SortingStrategy {
     
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
 
         for (int cycleStart = 0; cycleStart < n - 1; cycleStart++) {
@@ -56,6 +57,8 @@ public class CycleSort implements SortingStrategy {
                 }
             }
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

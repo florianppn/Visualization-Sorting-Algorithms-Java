@@ -48,7 +48,6 @@ public class ControllerSortMenu extends JPanel implements ActionListener {
         if (e.getSource() instanceof JMenuItem) {
             String item = ((JMenuItem) e.getSource()).getText();
             gui.refresh();
-
             switch (item) {
                 case "Bubble":
                     this.sl.reload(new BubbleSort(), item);

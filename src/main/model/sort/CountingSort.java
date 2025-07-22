@@ -12,6 +12,7 @@ public class CountingSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
+        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         if (n == 0) return;
 
@@ -44,6 +45,8 @@ public class CountingSort implements SortingStrategy {
         for (int i = 0; i < n; i++) {
             sl.set(i, output[i]);
         }
+        long endTime = System.currentTimeMillis();
+        sl.setDelay(endTime - startTime);
     }
 
 }

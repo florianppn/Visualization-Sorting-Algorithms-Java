@@ -1,6 +1,5 @@
 package main.view;
 
-import main.utils.*;
 import main.model.*;
 
 import java.awt.*;
@@ -13,18 +12,22 @@ import javax.swing.*;
  * @version 1.0
  */
 @SuppressWarnings("serial")
-public abstract class AnimationStrategy extends JPanel implements ModelListener {
+public abstract class AnimationStrategy extends JPanel implements Runnable {
 
     protected static int SLEEP = 6;
     protected SortingList sl;
-    protected String eventType;
     protected int count;
+    protected int current1;
+    protected int current2;
+    protected int[] table;
+    protected String eventType;
 
     public AnimationStrategy(SortingList sl) {
         this.sl = sl;
-        this.sl.addModelListener(this);
-        this.eventType = "step";
         this.count = 0;
+        this.current1 = -1;
+        this.current2 = -1;
+        this.table = sl.getGeneratorData();
         setBackground(Color.BLACK);
     }
 
@@ -53,7 +56,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(eventType.equals("step")) {
+        if(eventType.equals("step") || eventType.equals("init")) {
             this.drawSortStep(g);
         } else if(eventType.equals("end")) {
             this.drawSortEnd(g);
@@ -68,10 +71,10 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
      * @param g l'objet Graphics.
      */
     public void drawSortStep(Graphics g) {
-        for (int i = 0; i < this.sl.getSize(); i++) {
-            if (this.sl.getCurrent1() == i) {
+        for (int i = 0; i < this.table.length; i++) {
+            if (this.current1 == i) {
                 g.setColor(Color.GREEN);
-            } else if (this.sl.getCurrent2() == i) {
+            } else if (this.current2 == i) {
                 g.setColor(Color.RED);
             } else {
                 g.setColor(Color.WHITE);
@@ -88,7 +91,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
      * @param g l'objet Graphics.
      */
     public void drawSortEnd(Graphics g) {
-        for (int i=0; i < this.sl.getSize(); i++) {
+        for (int i=0; i < this.table.length; i++) {
             if(this.count >= i) {
                 g.setColor(Color.GREEN);
             } else {
@@ -120,19 +123,23 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     }
 
     @Override
-    public void updatedModel(Object source, String eventType) {
-        this.eventType = eventType;
-        if(this.eventType.equals("end")) {
-            while (this.count < this.sl.getSize()) {
-                this.count++;
+    public void run() {
+        while (true) {
+            this.eventType = this.sl.takeEventTypeBuffer();
+            this.current1 = this.sl.takeCurrent1Buffer();
+            this.current2 = this.sl.takeCurrent2Buffer();
+            this.table = this.sl.takeDataBuffer();
+            if ("end".equals(this.eventType)) {
+                while (this.count < this.table.length) {
+                    this.count++;
+                    SwingUtilities.invokeLater(this::repaint);
+                    sleep(2L);
+                }
+                this.count = 0;
+            } else {
                 SwingUtilities.invokeLater(this::repaint);
-                this.sleep(6L);
+                sleep(2L);
             }
-            this.eventType = "step";
-            this.count = 0;
-        } else {
-            SwingUtilities.invokeLater(this::repaint);
-            this.sleep(2L);
         }
     }
 

@@ -19,12 +19,12 @@ public class PyramidAnimationView extends AnimationStrategy {
 
     @Override
     public void drawGeometricShape(Graphics g, int i) {
-        int size = this.sl.getSize();
+        int size = this.table.length;
         int width = getWidth();
         int height = getHeight();
         
         int baseHeight = (height - 2) / size;
-        int value = this.sl.getGeneratorData()[i];
+        int value = this.table[i];
         int baseWidth = (int) ((value / (double) size) * (width - 2));
         int x1 = (width - baseWidth) / 2;
         int x2 = x1 + baseWidth;
