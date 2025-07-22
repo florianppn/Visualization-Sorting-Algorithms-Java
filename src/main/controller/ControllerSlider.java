@@ -24,9 +24,9 @@ public class ControllerSlider extends JPanel implements ChangeListener {
         this.as = as;
         this.speedSlider = new JSlider(1, 11);
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
-        labelTable.put(1, new JLabel("rapide"));
+        labelTable.put(1, new JLabel("fast"));
         labelTable.put(6, new JLabel("normal"));
-        labelTable.put(11, new JLabel("lent"));
+        labelTable.put(11, new JLabel("slow"));
         this.speedSlider.setLabelTable(labelTable);
         this.speedSlider.setPaintTrack(true); 
         this.speedSlider.setPaintTicks(true); 
