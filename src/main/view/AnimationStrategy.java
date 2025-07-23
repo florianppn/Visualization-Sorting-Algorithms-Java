@@ -1,8 +1,10 @@
 package main.view;
 
 import main.model.*;
+import main.utils.*;
 
 import java.awt.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.*;
 
 /**
@@ -11,55 +13,71 @@ import javax.swing.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
-public abstract class AnimationStrategy extends JPanel implements Runnable {
+public abstract class AnimationStrategy extends JPanel implements ModelListener {
 
-    protected static int SLEEP = 6;
+    protected static int TIME = 6;
     protected SortingList sl;
     protected int count;
-    protected int current1;
-    protected int current2;
-    protected int[] table;
-    protected String eventType;
+    protected Timer timer;
+    protected ConcurrentLinkedQueue<String> eventTypeBuffer;
+    protected ConcurrentLinkedQueue<int[]> dataBuffer;
+    protected ConcurrentLinkedQueue<Integer> current1Buffer;
+    protected ConcurrentLinkedQueue<Integer> current2Buffer;
 
     public AnimationStrategy(SortingList sl) {
         this.sl = sl;
+        this.sl.addModelListener(this);
         this.count = 0;
-        this.current1 = -1;
-        this.current2 = -1;
-        this.table = sl.getGeneratorData();
+        this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
+        this.dataBuffer = new ConcurrentLinkedQueue<>();
+        this.current1Buffer = new ConcurrentLinkedQueue<>();
+        this.current2Buffer = new ConcurrentLinkedQueue<>();
         setBackground(Color.BLACK);
     }
 
     /**
-     * Retourne la valeur de sleep.
-     *
-     * @return la valeur de sleep.
+     * Stoppe le timer de l'animation.
      */
-    public int getSleep() {
-        return AnimationStrategy.SLEEP;
+    public void stopTimer() {
+        if (this.timer != null) {
+            this.timer.stop();
+            this.eventTypeBuffer.clear();
+            this.dataBuffer.clear();
+            this.current1Buffer.clear();
+            this.current2Buffer.clear();
+            this.count = 0;
+        }
     }
 
-    /**
-     * Modifie la valeur de sleep.
-     * Si la valeur est négative, une exception est levée.
-     *
-     * @param s la nouvelle valeur de sleep.
-     */
-    public void setSleep(int s) {
-        if (AnimationStrategy.SLEEP < 0) {
-            throw new IllegalArgumentException("Sleep value cannot be negative.");
+    public void setTimer(int s) {
+        if (this.timer != null) {
+            if (AnimationStrategy.TIME < 0) {
+                throw new IllegalArgumentException("Sleep value cannot be negative.");
+            }
+            AnimationStrategy.TIME = s * 6;
+            this.timer.stop();
+            this.timer.setDelay(AnimationStrategy.TIME);
+            this.timer.start();
         }
-        AnimationStrategy.SLEEP = s;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(eventType.equals("step") || eventType.equals("init")) {
-            this.drawSortStep(g);
-        } else if(eventType.equals("end")) {
-            this.drawSortEnd(g);
+        String eventType = this.eventTypeBuffer.poll();
+        if (eventType != null) {
+            if (eventType.equals("step")) {
+                int[] table = this.dataBuffer.poll();
+                Integer current1 = this.current1Buffer.poll();
+                Integer current2 = this.current2Buffer.poll();
+                this.drawSortStep(g, table, current1, current2);
+            } else if (eventType.equals("end")) {
+                this.drawSortEnd(g, this.sl.getGeneratorData());
+            } else {
+                this.drawSortStep(g, this.sl.getGeneratorData(), -1, -1);
+            }
+        } else {
+            this.drawSortStep(g, this.sl.getGeneratorData(), -1, -1);
         }
     }
 
@@ -70,16 +88,16 @@ public abstract class AnimationStrategy extends JPanel implements Runnable {
      *
      * @param g l'objet Graphics.
      */
-    public void drawSortStep(Graphics g) {
-        for (int i = 0; i < this.table.length; i++) {
-            if (this.current1 == i) {
+    public void drawSortStep(Graphics g, int[] table, int current1, int current2) {
+        for (int i = 0; i < table.length; i++) {
+            if (current1 == i) {
                 g.setColor(Color.GREEN);
-            } else if (this.current2 == i) {
+            } else if (current2 == i) {
                 g.setColor(Color.RED);
             } else {
                 g.setColor(Color.WHITE);
             }
-            this.drawGeometricShape(g, i);
+            this.drawGeometricShape(g, table, i);
         }
     }
 
@@ -90,14 +108,14 @@ public abstract class AnimationStrategy extends JPanel implements Runnable {
      *
      * @param g l'objet Graphics.
      */
-    public void drawSortEnd(Graphics g) {
-        for (int i=0; i < this.table.length; i++) {
+    public void drawSortEnd(Graphics g, int[] table) {
+        for (int i=0; i < table.length; i++) {
             if(this.count >= i) {
                 g.setColor(Color.GREEN);
             } else {
                 g.setColor(Color.WHITE);
             }
-            this.drawGeometricShape(g, i);
+            this.drawGeometricShape(g, table, i);
         }
     }
 
@@ -107,40 +125,37 @@ public abstract class AnimationStrategy extends JPanel implements Runnable {
      * @param g l'objet Graphics.
      * @param i l'indice de l'élément dans le tableau de tri.
      */
-    abstract void drawGeometricShape(Graphics g, int i);
+    abstract void drawGeometricShape(Graphics g, int[] table, int i);
 
     /**
-     * Met en pause l'animation.
-     *
-     * @param multiplier le multiplicateur de la pause.
+     * Démarre l'animation.
      */
-    protected void sleep(long multiplier) {
-        try {
-            Thread.sleep(AnimationStrategy.SLEEP * multiplier);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupted Exception : "+e.getMessage());
-        }
+    public void run() {
+        this.timer = new Timer(AnimationStrategy.TIME, e -> {
+            String eventType = this.eventTypeBuffer.peek();
+            if (eventType != null) {
+                if (eventType.equals("end") && this.count < this.sl.getGeneratorData().length) {
+                    this.eventTypeBuffer.offer("end");
+                    this.count++;
+                }
+                SwingUtilities.invokeLater(this::repaint);
+            } else {
+                this.count = 0;
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        this.timer.setRepeats(true);
+        this.timer.start();
     }
 
     @Override
-    public void run() {
-        while (true) {
-            this.eventType = this.sl.takeEventTypeBuffer();
-            this.current1 = this.sl.takeCurrent1Buffer();
-            this.current2 = this.sl.takeCurrent2Buffer();
-            this.table = this.sl.takeDataBuffer();
-            if ("end".equals(this.eventType)) {
-                while (this.count < this.table.length) {
-                    this.count++;
-                    SwingUtilities.invokeLater(this::repaint);
-                    sleep(2L);
-                }
-                this.count = 0;
-            } else {
-                SwingUtilities.invokeLater(this::repaint);
-                sleep(2L);
-            }
-        }
+    public void updatedModel(Object source, String eventType) {
+        this.eventTypeBuffer.offer(eventType);
+        this.dataBuffer.offer(this.sl.getGeneratorData().clone());
+        this.current1Buffer.offer(this.sl.getCurrent1());
+        this.current2Buffer.offer(this.sl.getCurrent2());
+        if (eventType.equals("run")) this.run();
+        if (eventType.equals("reload")) this.repaint();
     }
 
 }

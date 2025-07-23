@@ -18,13 +18,13 @@ public class VBarAnimationView extends AnimationStrategy {
     }
 
     @Override
-    protected void drawGeometricShape(Graphics g, int i) {
-        int size = this.table.length;
+    protected void drawGeometricShape(Graphics g, int[] table, int i) {
+        int size = table.length;
         int width = getWidth();
         int height = getHeight();
 
         int barWidth = width / size;
-        int barHeight = (int) ((this.table[i] / (double) size) * (height - 2));
+        int barHeight = (int) ((table[i] / (double) size) * (height - 2));
         
         int x = (i * (width) / size + (width) / (2 * size)) - 5;
         int y = height - barHeight;

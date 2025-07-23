@@ -1,4 +1,6 @@
-package main.controller;
+package main.view;
+
+import main.controller.MouseOverEvent;
 
 import javax.swing.*;
 import java.awt.*;

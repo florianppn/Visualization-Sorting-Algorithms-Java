@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import main.model.sort.*;
+import main.utils.*;
 
 
 /**
@@ -12,16 +13,13 @@ import main.model.sort.*;
  * @author Florian Pépin
  * @version 1.0
  */
-public class SortingList implements Runnable {
+public class SortingList extends AbstractListenableModel implements Runnable {
 
     private SortingStrategy sortingStrategy;
-    private BlockingQueue<int[]> dataBuffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<Integer> current1Buffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<Integer> current2Buffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<SortState> sortStateBuffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<String> eventTypeBuffer = new LinkedBlockingQueue<>();
     private int[] generatorData;
     private final int[] originalData;
+    private int current1;
+    private int current2;
     private int comparisons;
     private int arrayAccess;
     private long delay;
@@ -35,15 +33,11 @@ public class SortingList implements Runnable {
         this.originalData = Arrays.copyOf(generatorData, generatorData.length);
         this.comparisons = 0;
         this.arrayAccess = 0;
+        this.current1 = -1;
+        this.current2 = -1;
         this.delay = 0;
         this.sortName = sortName;
         this.size = generatorData.length;
-
-        this.setDataBuffer(generatorData.clone());
-        this.setCurrent1Buffer(-1);
-        this.setCurrent2Buffer(-1);
-        this.setEventTypeBuffer("init");
-        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
     }
 
     public int[] getGeneratorData() {
@@ -56,40 +50,12 @@ public class SortingList implements Runnable {
         return this.generatorData[i];
     }
 
-    public int[] takeDataBuffer() {
-        try {
-            return this.dataBuffer.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return null;
+    public int getCurrent1() {
+        return this.current1;
     }
 
-    public int takeCurrent1Buffer() {
-        try {
-            return this.current1Buffer.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return -1;
-    }
-
-    public int takeCurrent2Buffer() {
-        try {
-            return this.current2Buffer.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return -1;
-    }
-
-    public String takeEventTypeBuffer() {
-        try {
-            return this.eventTypeBuffer.take();
-        } catch (Exception e) {
-            Thread.currentThread().interrupt();
-        }
-        return "error";
+    public int getCurrent2() {
+        return this.current2;
     }
 
     public long getDelay() {
@@ -108,15 +74,6 @@ public class SortingList implements Runnable {
         return this.sortName;
     }
 
-    public SortState takeSortStateBuffer() {
-        try {
-            return this.sortStateBuffer.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return null;
-    }
-
     public int getSize() {
         return this.size;
     }
@@ -130,24 +87,12 @@ public class SortingList implements Runnable {
         this.sortingStrategy = sortingStrategy;
     }
 
-    public void setDataBuffer(int[] data) {
-        this.dataBuffer.offer(data.clone());
+    public void setCurrent1(int current1) {
+        this.current1 = current1;
     }
 
-    public void setCurrent1Buffer(int current1) {
-        this.current1Buffer.offer(current1);
-    }
-
-    public void setCurrent2Buffer(int current2) {
-        this.current2Buffer.offer(current2);
-    }
-
-    public void setEventTypeBuffer(String eventType) {
-        this.eventTypeBuffer.offer(eventType);
-    }
-
-    public void setSortStateBuffer(SortState sortState) {
-        this.sortStateBuffer.offer(sortState);
+    public void setCurrent2(int current2) {
+        this.current2 = current2;
     }
 
     public void setDelay(long delay) {
@@ -163,11 +108,8 @@ public class SortingList implements Runnable {
     public void set(int i, int value) {
         this.generatorData[i] = value;
         this.arrayAccess++;
-        this.setDataBuffer(this.generatorData.clone());
-        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
-        this.setCurrent1Buffer(-1);
-        this.setCurrent2Buffer(i);
-        this.setEventTypeBuffer("step");
+        this.setCurrent2(i);
+        this.fireChange("step");
     }
 
     /**
@@ -182,31 +124,19 @@ public class SortingList implements Runnable {
             this.generatorData[i] = this.generatorData[j];
             this.generatorData[j] = tmp;
             this.arrayAccess += 2;
-            this.setDataBuffer(this.generatorData.clone());
-            this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
-            this.setCurrent1Buffer(i);
-            this.setCurrent2Buffer(j);
-            this.setEventTypeBuffer("step");
+            this.setCurrent1(i);
+            this.setCurrent2(j);
+            this.fireChange("step");
         }
     }
 
     @Override
     public void run() {
-        this.resetData();
         this.sortingStrategy.sortingAlgorithm(this);
-        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, this.delay));
-        this.setDataBuffer(this.generatorData.clone());
-        this.setCurrent1Buffer(-1);
-        this.setCurrent2Buffer(-1);
-        this.setEventTypeBuffer("end");
-    }
-
-    /**
-     * Réinitialise les données de la liste.
-     */
-    public void resetData() {
-        this.generatorData = Arrays.copyOf(this.originalData, this.originalData.length);
-        this.dataBuffer.clear();
+        this.fireChange("run");
+        this.setCurrent1(-1);
+        this.setCurrent2(-1);
+        this.fireChange("end");
     }
 
     /**
@@ -217,15 +147,18 @@ public class SortingList implements Runnable {
         this.delay = 0;
         this.comparisons = 0;
         this.arrayAccess = 0;
-        this.sortStateBuffer.clear();
-        this.current1Buffer.clear();
-        this.current2Buffer.clear();
-        this.dataBuffer.clear();
-        this.setDataBuffer(generatorData.clone());
-        this.setCurrent1Buffer(-1);
-        this.setCurrent2Buffer(-1);
-        this.setEventTypeBuffer("init");
-        this.setSortStateBuffer(new SortState(this.comparisons, this.arrayAccess, 0));
+        this.fireChange("reload");
+    }
+
+    /**
+     * Recharge la liste sans déclencher d'événement de changement.
+     * Utile pour réinitialiser la liste sans notifier les observateurs.
+     */
+    public void reloadWithoutFireChange() {
+        this.generatorData = Arrays.copyOf(this.originalData, this.originalData.length);
+        this.delay = 0;
+        this.comparisons = 0;
+        this.arrayAccess = 0;
     }
 
     /**

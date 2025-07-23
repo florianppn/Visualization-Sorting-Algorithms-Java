@@ -1,8 +1,10 @@
 package main.view;
 
 import main.model.*;
+import main.utils.ModelListener;
 
 import java.awt.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.*;
 
 /**
@@ -11,16 +13,23 @@ import javax.swing.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
-public class StatisticView extends JPanel implements Runnable {
+public class StatisticView extends JPanel implements ModelListener {
 
-    protected static int SLEEP = 6;
+    protected static int TIME = 6;
     private SortingList sl;
     private JLabel stats;
+    private Timer timer;
+    private ConcurrentLinkedQueue<String> eventTypeBuffer;
+    private ConcurrentLinkedQueue<Integer> comparisonsBuffer;
+    private ConcurrentLinkedQueue<Integer> arrayAccessBuffer;
 
     public StatisticView(SortingList sl) {
         super();
         this.sl = sl;
+        this.sl.addModelListener(this);
+        this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
+        this.comparisonsBuffer = new ConcurrentLinkedQueue<>();
+        this.arrayAccessBuffer = new ConcurrentLinkedQueue<>();
         this.stats = new JLabel(this.sl.getSortName() + " Sort" + " - " + this.sl.getComparisons() + " comparisons, " + this.sl.getArrayAccess() + " array accesses, " + this.sl.getDelay() + " ms delay");
         this.stats.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
@@ -28,39 +37,62 @@ public class StatisticView extends JPanel implements Runnable {
     }
 
     /**
-     * Met en pause l'animation.
-     *
-     * @param multiplier le multiplicateur de la pause.
+     * Stoppe le timer de l'animation.
      */
-    protected void sleep(long multiplier) {
-        try {
-            Thread.sleep(StatisticView.SLEEP * multiplier);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupted Exception : "+e.getMessage());
+    public void stopTimer() {
+        if (this.timer != null) {
+            this.timer.stop();
+            this.eventTypeBuffer.clear();
+            this.comparisonsBuffer.clear();
+            this.arrayAccessBuffer.clear();
+            this.stats.setText(this.sl.getSortName() + " Sort" + " - " + 0 +
+                    " comparisons, " + 0 + " array accesses, " +
+                    0 + " ms delay");
         }
     }
 
-    public void setSleep(int s) {
-        if (StatisticView.SLEEP < 0) {
-            throw new IllegalArgumentException("Sleep value cannot be negative.");
+    public void setTimer(int s) {
+        if (this.timer != null) {
+            if (StatisticView.TIME < 0) {
+                throw new IllegalArgumentException("Sleep value cannot be negative.");
+            }
+            StatisticView.TIME = s * 6;
+            this.timer.stop();
+            this.timer.setDelay(StatisticView.TIME);
+            this.timer.start();
         }
-        StatisticView.SLEEP = s;
     }
 
     /**
-     * Met à jour les statistiques affichées.
+     * Démarre l'animation.
      */
-    public void updateStats() {
-        SortState state = this.sl.takeSortStateBuffer();
-        this.stats.setText(this.sl.getSortName() + " Sort" + " - " + state.getComparisons() + " comparisons, " + state.getArrayAccess() + " array accesses, " + state.getDelay() + " ms delay");
+    public void run() {
+        this.timer = new Timer(StatisticView.TIME, e -> {
+            String eventType = this.eventTypeBuffer.poll();
+            if (eventType != null ) {
+                if (eventType.equals("step")) {
+                    this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                            " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                            0 + " ms delay");
+                } else if (eventType.equals("end")) {
+                    this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                            " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                            this.sl.getDelay() + " ms delay");
+                }
+            } else {
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        this.timer.setRepeats(true);
+        this.timer.start();
     }
 
     @Override
-    public void run() {
-        while (true) {
-            this.updateStats();
-            this.sleep(2L);
-        }
+    public void updatedModel(Object source, String eventType) {
+        this.eventTypeBuffer.add(eventType);
+        this.comparisonsBuffer.add(this.sl.getComparisons());
+        this.arrayAccessBuffer.add(this.sl.getArrayAccess());
+        if (eventType.equals("run")) this.run();
     }
 
 }

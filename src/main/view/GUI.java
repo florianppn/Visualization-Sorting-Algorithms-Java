@@ -12,24 +12,41 @@ import javax.swing.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class GUI extends JFrame {
     
     private SortingList sl;
     private AnimationStrategy animation;
     private StatisticView statisticView;
+    private ControllerButtons controllerButtons;
+    private ControllerSortMenu controllerSortMenu;
+    private ControllerAnimationMenu controllerAnimationMenu;
+    private ControllerSlider controllerSlider;
+    private Menu animationMenuBar;
+    private Menu sortMenuBar;
+    private Button reloadButton;
+    private Button sortButton;
+    private Slider slider;
+    private String[] sorts = {
+            "Bubble", "Cocktail", "Gnome", "Heap", "Insert",
+            "Merge", "Quick", "Radix", "Selection", "Shell", "Tim",
+            "Bucket", "Counting", "OddEven", "Cycle", "Pigeonhole"
+    };
+    private String[] animations = {"Vbars", "Points", "Pyramid", "Lines"};
     
     public GUI(SortingList sl) {
         super("Sorting Algorithms");
         this.sl = sl;
         this.animation = new VBarAnimationView(sl);
         this.statisticView = new StatisticView(sl);
-        Thread t1 = new Thread(this.animation);
-        Thread t2 = new Thread(this.statisticView);
-        t1.setDaemon(true);
-        t2.setDaemon(true);
-        t1.start();
-        t2.start();
+        this.controllerButtons = new ControllerButtons(sl, this);
+        this.controllerSortMenu = new ControllerSortMenu(sl, this);
+        this.controllerAnimationMenu = new ControllerAnimationMenu(sl, this);
+        this.controllerSlider = new ControllerSlider(this.animation, this.statisticView);
+        this.animationMenuBar = new Menu(this.controllerAnimationMenu, this.animations, "Animations");
+        this.sortMenuBar = new Menu(this.controllerSortMenu, this.sorts, "Sorts");
+        this.reloadButton = new Button(this.controllerButtons, "RELOAD", "reload.png");
+        this.sortButton = new Button(this.controllerButtons, "SORT", "run.png");
+        this.slider = new Slider(this.controllerSlider, 1, 11, 6);
 
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,13 +55,23 @@ public class GUI extends JFrame {
         this.setVisible(true);
     }
 
+    public AnimationStrategy getAnimation() {
+        return this.animation;
+    }
+
+    public StatisticView getStatisticView() {
+        return this.statisticView;
+    }
+
     /**
      * Permet de changer la stratégie d'animation.
      *
      * @param a La nouvelle stratégie d'animation.
      */
     public void setAnimation(AnimationStrategy a) {
+        this.sl.removeModelListener(this.animation);
         this.animation = a;
+        this.controllerSlider.setAnimation(this.animation);
         this.refresh();
     }
 
@@ -65,19 +92,24 @@ public class GUI extends JFrame {
     public void showActionPanel() {
         JPanel actionPanel = new JPanel();
         JPanel menuPanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
+        JPanel sliderPanel = new JPanel();
         actionPanel.setBackground(Color.WHITE);
         menuPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(Color.WHITE);
+        sliderPanel.setBackground(Color.WHITE);
         actionPanel.setLayout(new GridLayout(1, 3));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        ControllerSortMenu csm = new ControllerSortMenu(this.sl, this);
-        ControllerAnimationMenu cam = new ControllerAnimationMenu(this.sl, this);
+        menuPanel.add(this.sortMenuBar);
+        menuPanel.add(this.animationMenuBar);
 
-        menuPanel.add(csm);
-        menuPanel.add(cam);
+        buttonPanel.add(this.sortButton);
+        buttonPanel.add(this.reloadButton);
 
         actionPanel.add(menuPanel);
-        actionPanel.add(new ControllerSlider(this.animation, this.statisticView));
-        actionPanel.add(new ControllerButtons(this.sl, csm, cam));
+        actionPanel.add(this.slider);
+        actionPanel.add(buttonPanel);
 
         this.add(actionPanel, BorderLayout.NORTH);
     }
