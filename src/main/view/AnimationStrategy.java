@@ -66,6 +66,12 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
         super.paintComponent(g);
         String eventType = this.eventTypeBuffer.poll();
         if (eventType != null) {
+            if (eventType.equals("reload")) {
+                this.eventTypeBuffer.clear();
+                this.dataBuffer.clear();
+                this.current1Buffer.clear();
+                this.current2Buffer.clear();
+            }
             if (eventType.equals("step")) {
                 int[] table = this.dataBuffer.poll();
                 Integer current1 = this.current1Buffer.poll();
