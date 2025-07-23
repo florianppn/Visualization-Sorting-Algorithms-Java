@@ -21,11 +21,13 @@ public class GUI extends JFrame {
     private ControllerSortMenu controllerSortMenu;
     private ControllerAnimationMenu controllerAnimationMenu;
     private ControllerSlider controllerSlider;
+    private ControllerSpinner controllerSpinner;
     private Menu animationMenuBar;
     private Menu sortMenuBar;
     private Button reloadButton;
     private Button sortButton;
     private Slider slider;
+    private Spinner spinner;
     private String[] sorts = {
             "Bubble", "Cocktail", "Gnome", "Heap", "Insert",
             "Merge", "Quick", "Radix", "Selection", "Shell", "Tim",
@@ -42,11 +44,13 @@ public class GUI extends JFrame {
         this.controllerSortMenu = new ControllerSortMenu(sl, this);
         this.controllerAnimationMenu = new ControllerAnimationMenu(sl, this);
         this.controllerSlider = new ControllerSlider(this.animation, this.statisticView);
+        this.controllerSpinner = new ControllerSpinner(sl, this);
         this.animationMenuBar = new Menu(this.controllerAnimationMenu, this.animations, "Animations");
         this.sortMenuBar = new Menu(this.controllerSortMenu, this.sorts, "Sorts");
         this.reloadButton = new Button(this.controllerButtons, "RELOAD", "reload.png");
         this.sortButton = new Button(this.controllerButtons, "SORT", "run.png");
         this.slider = new Slider(this.controllerSlider, 1, 11, 6);
+        this.spinner = new Spinner(this.controllerSpinner, 0f, 1f, 1f);
 
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,14 +102,22 @@ public class GUI extends JFrame {
         menuPanel.setBackground(Color.WHITE);
         buttonPanel.setBackground(Color.WHITE);
         sliderPanel.setBackground(Color.WHITE);
-        actionPanel.setLayout(new GridLayout(1, 3));
+        menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 15));
+        actionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 8));
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         menuPanel.add(this.sortMenuBar);
         menuPanel.add(this.animationMenuBar);
 
+        JLabel labelEntropy = new JLabel("entropy of table : ");
+        JPanel entropyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        entropyPanel.setBackground(Color.WHITE);
+        entropyPanel.add(labelEntropy);
+        entropyPanel.add(this.spinner);
+
         buttonPanel.add(this.sortButton);
         buttonPanel.add(this.reloadButton);
+        buttonPanel.add(entropyPanel);
 
         actionPanel.add(menuPanel);
         actionPanel.add(this.slider);

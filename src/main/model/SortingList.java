@@ -2,6 +2,7 @@ package main.model;
 
 import java.util.*;
 
+import main.generator.*;
 import main.model.sort.*;
 import main.utils.*;
 
@@ -15,21 +16,23 @@ import main.utils.*;
 public class SortingList extends AbstractListenableModel implements Runnable {
 
     private SortingStrategy sortingStrategy;
+    private GeneratorWithEntropy generatorWithEntropy;
     private int[] generatorData;
-    private final int[] originalData;
+    private int[] originalData;
     private int current1;
     private int current2;
     private int comparisons;
     private int arrayAccess;
-    private long delay;
+    private double delay;
     private String sortName;
     private int size;
 
-    public SortingList(SortingStrategy sortingStrategy, String sortName, int[] generatorData) {
+    public SortingList(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
         super();
         this.sortingStrategy = sortingStrategy;
-        this.generatorData = generatorData;
-        this.originalData = Arrays.copyOf(generatorData, generatorData.length);
+        this.generatorWithEntropy = generatorWithEntropy;
+        this.generatorData = generatorWithEntropy.sortWithEntropy(true);
+        this.originalData = Arrays.copyOf(this.generatorData, this.generatorData.length);
         this.comparisons = 0;
         this.arrayAccess = 0;
         this.current1 = -1;
@@ -57,7 +60,7 @@ public class SortingList extends AbstractListenableModel implements Runnable {
         return this.current2;
     }
 
-    public long getDelay() {
+    public double getDelay() {
         return this.delay;
     }
 
@@ -84,6 +87,17 @@ public class SortingList extends AbstractListenableModel implements Runnable {
      */
     public void setSortingStrategy(SortingStrategy sortingStrategy) {
         this.sortingStrategy = sortingStrategy;
+    }
+
+    /**
+     * Définit les données du générateur avec une nouvelle valeur d'entropie.
+     *
+     * @param n La nouvelle valeur d'entropie.
+     */
+    public void setGeneratorData(float n) {
+        this.generatorWithEntropy.setEntropy(n);
+        this.generatorData = this.generatorWithEntropy.sortWithEntropy(true);
+        this.originalData = Arrays.copyOf(this.generatorData, this.generatorData.length);
     }
 
     public void setCurrent1(int current1) {
@@ -131,10 +145,10 @@ public class SortingList extends AbstractListenableModel implements Runnable {
 
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         this.sortingStrategy.sortingAlgorithm(this);
-        long endTime = System.currentTimeMillis();
-        this.delay = endTime - startTime;
+        long endTime = System.nanoTime();
+        this.delay = (endTime - startTime) / 1000000.0;
         this.fireChange("run");
         this.setCurrent1(-1);
         this.setCurrent2(-1);

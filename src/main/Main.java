@@ -32,28 +32,13 @@ public class Main {
     }
 
     /**
-     * Crée une liste de taille n.
-     *
-     * @param n taille de la liste.
-     * @return la liste de taille n.
-     */
-    public static int[] createList(int n) {
-        int[] newList = new int[n];
-        for(int i=1; i<=n; i++) {
-            newList[i-1] = i;
-        }
-        return newList;
-    }
-
-    /**
      * Point d'entrée de l'application.
      *
      * @param args arguments de la ligne de commande.
      */
     public static void main(String[] args) {
-        int[] data = Main.createList(SIZE);
-        GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY);
-        SortingList sl = new SortingList(new QuickSort(), "Quick", rgs.sortWithEntropy(data, true));
+        GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY, SIZE);
+        SortingList sl = new SortingList(new QuickSort(), "Quick", rgs);
         GUI g = new GUI(sl);
     }
     

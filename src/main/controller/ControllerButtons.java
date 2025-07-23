@@ -14,11 +14,11 @@ import javax.swing.*;
  */
 public class ControllerButtons implements ActionListener {
 
-    private SortingList sortingList;
+    private SortingList sl;
     private GUI gui;
 
-    public ControllerButtons(SortingList sortingList, GUI gui) {
-        this.sortingList = sortingList;
+    public ControllerButtons(SortingList sl, GUI gui) {
+        this.sl = sl;
         this.gui = gui;
     }
 
@@ -26,7 +26,7 @@ public class ControllerButtons implements ActionListener {
      * Lance le tri.
      */
     private void run() {
-        Thread sortingThread = new Thread(this.sortingList);
+        Thread sortingThread = new Thread(this.sl);
         sortingThread.start();
     }
 
@@ -38,13 +38,13 @@ public class ControllerButtons implements ActionListener {
                 case "SORT":
                     this.gui.getAnimation().stopTimer();
                     this.gui.getStatisticView().stopTimer();
-                    this.sortingList.reloadWithoutFireChange();
+                    this.sl.reloadWithoutFireChange();
                     this.run();
                     break;
                 case "RELOAD":
                     this.gui.getAnimation().stopTimer();
                     this.gui.getStatisticView().stopTimer();
-                    this.sortingList.reload();
+                    this.sl.reload();
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid Action.");

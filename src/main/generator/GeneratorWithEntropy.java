@@ -11,6 +11,7 @@ import java.util.*;
 public class GeneratorWithEntropy {
 
     private double entropy;
+    private int size;
     private final Random random = new Random();
 
     /**
@@ -18,8 +19,9 @@ public class GeneratorWithEntropy {
      *
      * @param entropy le niveau d'entropie.
      */
-    public GeneratorWithEntropy(double entropy) {
+    public GeneratorWithEntropy(double entropy, int size) {
         this.entropy = entropy;
+        this.size = size;
     }
 
     /**
@@ -94,14 +96,27 @@ public class GeneratorWithEntropy {
     }
 
     /**
+     * Créer un tableau de données de taille n.
+     *
+     * @return un tableau de données de taille n.
+     */
+    public int[] createtab() {
+        int[] newTab = new int[this.size];
+        for(int i=1; i<=this.size; i++) {
+            newTab[i-1] = i;
+        }
+        return newTab;
+    }
+
+    /**
      * Trier un tableau de données avec un certain niveau d'entropie.
      * Fonctionne avec n'importe quel nombre de symboles (binaire, ternaire, etc.)
      *
-     * @param tab le tableau de données à trier.
      * @param order indique l'ordre de tri (true pour utiliser la première probabilité, false pour la seconde).
      * @return le tableau de données partiellement mélangées selon le niveau d'entropie.
      */
-    public int[] sortWithEntropy(int[] tab, boolean order) {
+    public int[] sortWithEntropy(boolean order) {
+        int[] tab = this.createtab();
         if (tab.length <= 1 || entropy < 0 || entropy > 1) {
             return tab;
         }
