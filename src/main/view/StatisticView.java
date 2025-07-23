@@ -30,7 +30,8 @@ public class StatisticView extends JPanel implements ModelListener {
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.comparisonsBuffer = new ConcurrentLinkedQueue<>();
         this.arrayAccessBuffer = new ConcurrentLinkedQueue<>();
-        this.stats = new JLabel(this.sl.getSortName() + " Sort" + " - " + this.sl.getComparisons() + " comparisons, " + this.sl.getArrayAccess() + " array accesses, " + this.sl.getDelay() + " ms delay");
+        this.stats = new JLabel(this.sl.getSortName() + " Sort" + " - " + this.sl.getComparisons() + " comparisons, " +
+                this.sl.getArrayAccess() + " array accesses, " + this.sl.getDelay() + " ms real delay");
         this.stats.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
         this.add(this.stats, BorderLayout.CENTER);
@@ -47,7 +48,7 @@ public class StatisticView extends JPanel implements ModelListener {
             this.arrayAccessBuffer.clear();
             this.stats.setText(this.sl.getSortName() + " Sort" + " - " + 0 +
                     " comparisons, " + 0 + " array accesses, " +
-                    0 + " ms delay");
+                    0 + " ms real delay");
         }
     }
 
@@ -73,11 +74,11 @@ public class StatisticView extends JPanel implements ModelListener {
                 if (eventType.equals("step")) {
                     this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            0 + " ms delay");
+                            0 + " ms real delay");
                 } else if (eventType.equals("end")) {
                     this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            this.sl.getDelay() + " ms delay");
+                            this.sl.getDelay() + " ms real delay");
                 }
             } else {
                 ((Timer) e.getSource()).stop();

@@ -5,12 +5,11 @@ import main.model.*;
 import java.awt.*;
 
 /**
- * Represente la vue de l'animation de tri par barre verticale.
+ * Représente la vue de l'animation de tri par barre verticale.
  * 
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class VBarAnimationView extends AnimationStrategy {
     
     public VBarAnimationView(SortingList sl) {

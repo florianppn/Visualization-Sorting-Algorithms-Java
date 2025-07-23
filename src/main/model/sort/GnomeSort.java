@@ -12,7 +12,6 @@ public class GnomeSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         int pos = 0;
 
@@ -24,8 +23,6 @@ public class GnomeSort implements SortingStrategy {
                 pos--;
             }
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 
 }

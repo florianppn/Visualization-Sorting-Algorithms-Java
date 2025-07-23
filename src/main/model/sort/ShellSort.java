@@ -12,7 +12,6 @@ public class ShellSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         for (int gap = n / 2; gap > 0; gap /= 2) {
             for (int i = gap; i < n; i++) {
@@ -25,7 +24,5 @@ public class ShellSort implements SortingStrategy {
                 sl.set(j, temp);
             }
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 }

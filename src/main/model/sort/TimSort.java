@@ -16,7 +16,6 @@ public class TimSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         for (int i = 0; i < n; i += RUN) {
             this.insertionSort(sl, i, Math.min(i + RUN - 1, n - 1));
@@ -29,8 +28,6 @@ public class TimSort implements SortingStrategy {
                     merge(sl, left, mid, right);
             }
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 
     /**

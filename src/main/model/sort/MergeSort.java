@@ -23,15 +23,12 @@ public class MergeSort implements SortingStrategy {
      * @param right L'indice de droite de la liste.
      */
     private void mergeSort(SortingList sl, int left, int right) {
-        long startTime = System.currentTimeMillis();
         if (left < right) {
             int mid = (left + right) / 2;
             mergeSort(sl, left, mid);
             mergeSort(sl, mid + 1, right);
             merge(sl, left, mid, right);
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 
     /**

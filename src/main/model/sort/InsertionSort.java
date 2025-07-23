@@ -12,7 +12,6 @@ public class InsertionSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         for (int i = 1; i < n; i++) {
             int k = sl.getElement(i);
@@ -23,7 +22,5 @@ public class InsertionSort implements SortingStrategy {
             }
             sl.set(j + 1, k);
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 }

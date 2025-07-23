@@ -5,6 +5,12 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.util.*;
 
+/**
+ * Représente un slider personnalisé.
+ *
+ * @author Florian Pépin
+ * @version 1.0
+ */
 public class Slider extends JSlider {
 
     private ChangeListener listener;

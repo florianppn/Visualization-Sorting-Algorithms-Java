@@ -10,7 +10,6 @@ import java.awt.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class MouseOverEvent extends MouseAdapter {
 
     private JComponent component;

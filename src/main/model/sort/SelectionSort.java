@@ -12,7 +12,6 @@ public class SelectionSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
@@ -23,7 +22,5 @@ public class SelectionSort implements SortingStrategy {
             }
             if (minIndex != i) sl.swap(i, minIndex);
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 }

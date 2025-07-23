@@ -10,7 +10,6 @@ import java.awt.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class PointAnimationView extends AnimationStrategy {
 
     public PointAnimationView(SortingList sl) {

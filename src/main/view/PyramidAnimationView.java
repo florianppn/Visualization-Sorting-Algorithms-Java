@@ -10,7 +10,6 @@ import java.awt.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class PyramidAnimationView extends AnimationStrategy {
 
     public PyramidAnimationView(SortingList sl) {

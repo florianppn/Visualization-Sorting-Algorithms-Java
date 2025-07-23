@@ -12,7 +12,6 @@ import java.awt.event.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class Menu extends JMenuBar {
 
     private ActionListener listener;

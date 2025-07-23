@@ -10,7 +10,6 @@ import java.awt.*;
  * @author Tom David
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class LineAnimationView extends AnimationStrategy {
 
     public LineAnimationView(SortingList sl) {

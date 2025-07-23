@@ -17,10 +17,7 @@ public class QuickSort implements SortingStrategy {
 
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         this.iterativeQuickSort(sl, 0, sl.getSize() - 1);
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 
     /**

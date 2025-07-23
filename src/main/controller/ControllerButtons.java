@@ -12,7 +12,6 @@ import javax.swing.*;
  * @author Florian Pépin
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class ControllerButtons implements ActionListener {
 
     private SortingList sortingList;

@@ -12,7 +12,6 @@ public class OddEvenSort implements SortingStrategy {
     
     @Override
     public void sortingAlgorithm(SortingList sl) {
-        long startTime = System.currentTimeMillis();
         int n = sl.getSize();
         boolean sorted = false;
 
@@ -33,8 +32,6 @@ public class OddEvenSort implements SortingStrategy {
                 }
             }
         }
-        long endTime = System.currentTimeMillis();
-        sl.setDelay(endTime - startTime);
     }
 
 }

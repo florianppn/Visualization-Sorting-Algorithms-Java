@@ -1,7 +1,6 @@
 package main.model;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 import main.model.sort.*;
 import main.utils.*;
@@ -132,7 +131,10 @@ public class SortingList extends AbstractListenableModel implements Runnable {
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
         this.sortingStrategy.sortingAlgorithm(this);
+        long endTime = System.currentTimeMillis();
+        this.delay = endTime - startTime;
         this.fireChange("run");
         this.setCurrent1(-1);
         this.setCurrent2(-1);

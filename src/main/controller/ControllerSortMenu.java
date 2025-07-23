@@ -15,7 +15,6 @@ import java.util.function.Supplier;
  * @author Florian Pépin
  * @version 1.1
  */
-@SuppressWarnings("serial")
 public class ControllerSortMenu implements ActionListener {
 
     private SortingList sl;
