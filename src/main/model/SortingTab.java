@@ -7,12 +7,12 @@ import main.model.sort.*;
 import main.utils.*;
 
 /**
- * Représente une liste triable.
+ * Représente un tableau triable.
  *
  * @author Florian Pépin
  * @version 1.0
  */
-public class SortingList extends AbstractListenableModel implements Runnable {
+public class SortingTab extends AbstractListenableModel implements Runnable {
 
     private SortingStrategy sortingStrategy;
     private GeneratorWithEntropy generatorWithEntropy;
@@ -26,7 +26,7 @@ public class SortingList extends AbstractListenableModel implements Runnable {
     private String sortName;
     private int size;
 
-    public SortingList(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
+    public SortingTab(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
         super();
         this.sortingStrategy = sortingStrategy;
         this.generatorWithEntropy = generatorWithEntropy;

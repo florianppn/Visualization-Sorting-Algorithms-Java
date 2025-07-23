@@ -11,8 +11,8 @@ import main.model.*;
 public class BubbleSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
         int temp;
         boolean swapped;
         int counter = 0;
@@ -23,8 +23,8 @@ public class BubbleSort implements SortingStrategy {
             swapped = false;
             // Boucle interne pour comparer les éléments adjacents.
             for (int j = 0; j < n - i - 1; j++) {
-                if (sl.getElement(j) > sl.getElement(j + 1)) {
-                    sl.swap(j, j + 1);
+                if (sortingTab.getElement(j) > sortingTab.getElement(j + 1)) {
+                    sortingTab.swap(j, j + 1);
                     swapped = true;
                 }
             }

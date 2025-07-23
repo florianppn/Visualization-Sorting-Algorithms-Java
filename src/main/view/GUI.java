@@ -14,7 +14,7 @@ import javax.swing.*;
  */
 public class GUI extends JFrame {
     
-    private SortingList sl;
+    private SortingTab sortingTab;
     private AnimationStrategy animation;
     private StatisticView statisticView;
     private ControllerButtons controllerButtons;
@@ -35,16 +35,16 @@ public class GUI extends JFrame {
     };
     private String[] animations = {"Vbars", "Points", "Pyramid", "Lines"};
     
-    public GUI(SortingList sl) {
+    public GUI(SortingTab sortingTab) {
         super("Sorting Algorithms");
-        this.sl = sl;
-        this.animation = new VBarAnimationView(sl);
-        this.statisticView = new StatisticView(sl);
-        this.controllerButtons = new ControllerButtons(sl, this);
-        this.controllerSortMenu = new ControllerSortMenu(sl, this);
-        this.controllerAnimationMenu = new ControllerAnimationMenu(sl, this);
+        this.sortingTab = sortingTab;
+        this.animation = new VBarAnimationView(this.sortingTab);
+        this.statisticView = new StatisticView(this.sortingTab);
+        this.controllerButtons = new ControllerButtons(this.sortingTab, this);
+        this.controllerSortMenu = new ControllerSortMenu(this.sortingTab, this);
+        this.controllerAnimationMenu = new ControllerAnimationMenu(this.sortingTab, this);
         this.controllerSlider = new ControllerSlider(this.animation, this.statisticView);
-        this.controllerSpinner = new ControllerSpinner(sl, this);
+        this.controllerSpinner = new ControllerSpinner(this.sortingTab, this);
         this.animationMenuBar = new Menu(this.controllerAnimationMenu, this.animations, "Animations");
         this.sortMenuBar = new Menu(this.controllerSortMenu, this.sorts, "Sorts");
         this.reloadButton = new Button(this.controllerButtons, "RELOAD", "reload.png");
@@ -73,7 +73,7 @@ public class GUI extends JFrame {
      * @param a La nouvelle stratégie d'animation.
      */
     public void setAnimation(AnimationStrategy a) {
-        this.sl.removeModelListener(this.animation);
+        this.sortingTab.removeModelListener(this.animation);
         this.animation = a;
         this.controllerSlider.setAnimation(this.animation);
         this.refresh();

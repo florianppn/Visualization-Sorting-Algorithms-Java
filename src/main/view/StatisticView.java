@@ -16,22 +16,22 @@ import javax.swing.*;
 public class StatisticView extends JPanel implements ModelListener {
 
     protected static int TIME = 6;
-    private SortingList sl;
+    private SortingTab sortingTab;
     private JLabel stats;
     private Timer timer;
     private ConcurrentLinkedQueue<String> eventTypeBuffer;
     private ConcurrentLinkedQueue<Integer> comparisonsBuffer;
     private ConcurrentLinkedQueue<Integer> arrayAccessBuffer;
 
-    public StatisticView(SortingList sl) {
+    public StatisticView(SortingTab sortingTab) {
         super();
-        this.sl = sl;
-        this.sl.addModelListener(this);
+        this.sortingTab = sortingTab;
+        this.sortingTab.addModelListener(this);
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.comparisonsBuffer = new ConcurrentLinkedQueue<>();
         this.arrayAccessBuffer = new ConcurrentLinkedQueue<>();
-        this.stats = new JLabel(this.sl.getSortName() + " Sort" + " - " + this.sl.getComparisons() + " comparisons, " +
-                this.sl.getArrayAccess() + " array accesses, " + this.sl.getDelay() + " ms real delay");
+        this.stats = new JLabel(this.sortingTab.getSortName() + " Sort" + " - " + this.sortingTab.getComparisons() + " comparisons, " +
+                this.sortingTab.getArrayAccess() + " array accesses, " + this.sortingTab.getDelay() + " ms real delay");
         this.stats.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
         this.add(this.stats, BorderLayout.CENTER);
@@ -46,7 +46,7 @@ public class StatisticView extends JPanel implements ModelListener {
             this.eventTypeBuffer.clear();
             this.comparisonsBuffer.clear();
             this.arrayAccessBuffer.clear();
-            this.stats.setText(this.sl.getSortName() + " Sort" + " - " + 0 +
+            this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + 0 +
                     " comparisons, " + 0 + " array accesses, " +
                     0 + " ms real delay");
         }
@@ -55,7 +55,7 @@ public class StatisticView extends JPanel implements ModelListener {
     public void setTimer(int s) {
         if (this.timer != null) {
             if (StatisticView.TIME < 0) {
-                throw new IllegalArgumentException("Sleep value cannot be negative.");
+                throw new IllegalArgumentException("illegal value cannot be negative.");
             }
             StatisticView.TIME = s * 6;
             this.timer.stop();
@@ -72,13 +72,13 @@ public class StatisticView extends JPanel implements ModelListener {
             String eventType = this.eventTypeBuffer.poll();
             if (eventType != null ) {
                 if (eventType.equals("step")) {
-                    this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                    this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
                             0 + " ms real delay");
                 } else if (eventType.equals("end")) {
-                    this.stats.setText(this.sl.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                    this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            this.sl.getDelay() + " ms real delay");
+                            this.sortingTab.getDelay() + " ms real delay");
                 }
             } else {
                 ((Timer) e.getSource()).stop();
@@ -91,8 +91,8 @@ public class StatisticView extends JPanel implements ModelListener {
     @Override
     public void updatedModel(Object source, String eventType) {
         this.eventTypeBuffer.add(eventType);
-        this.comparisonsBuffer.add(this.sl.getComparisons());
-        this.arrayAccessBuffer.add(this.sl.getArrayAccess());
+        this.comparisonsBuffer.add(this.sortingTab.getComparisons());
+        this.arrayAccessBuffer.add(this.sortingTab.getArrayAccess());
         if (eventType.equals("run")) this.run();
     }
 

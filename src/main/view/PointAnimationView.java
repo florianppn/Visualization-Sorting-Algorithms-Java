@@ -12,8 +12,8 @@ import java.awt.*;
  */
 public class PointAnimationView extends AnimationStrategy {
 
-    public PointAnimationView(SortingList sl) {
-        super(sl);
+    public PointAnimationView(SortingTab sortingTab) {
+        super(sortingTab);
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.awt.*;
  */
 public class LineAnimationView extends AnimationStrategy {
 
-    public LineAnimationView(SortingList sl) {
-        super(sl);
+    public LineAnimationView(SortingTab sortingTab) {
+        super(sortingTab);
     }
 
     @Override

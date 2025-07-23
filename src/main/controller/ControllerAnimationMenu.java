@@ -16,19 +16,19 @@ import java.util.function.Supplier;
  */
 public class ControllerAnimationMenu implements ActionListener {
 
-    private SortingList sl;
+    private SortingTab sortingTab;
     private GUI gui;
     private Map<String, Supplier<AnimationStrategy>> sortFactories;
 
-    public ControllerAnimationMenu(SortingList sl, GUI gui) {
+    public ControllerAnimationMenu(SortingTab sortingTab, GUI gui) {
         super();
-        this.sl = sl;
+        this.sortingTab = sortingTab;
         this.gui = gui;
         this.sortFactories = new HashMap<>();
-        this.sortFactories.put("Vbars", () -> new VBarAnimationView(this.sl));
-        this.sortFactories.put("Points", () -> new PointAnimationView(this.sl));
-        this.sortFactories.put("Pyramid", () -> new PyramidAnimationView(this.sl));
-        this.sortFactories.put("Lines", () -> new LineAnimationView(this.sl));
+        this.sortFactories.put("Vbars", () -> new VBarAnimationView(this.sortingTab));
+        this.sortFactories.put("Points", () -> new PointAnimationView(this.sortingTab));
+        this.sortFactories.put("Pyramid", () -> new PyramidAnimationView(this.sortingTab));
+        this.sortFactories.put("Lines", () -> new LineAnimationView(this.sortingTab));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ControllerAnimationMenu implements ActionListener {
                 this.gui.getAnimation().stopTimer();
                 this.gui.getStatisticView().stopTimer();
                 this.gui.setAnimation(factory.get());
-                this.sl.reload();
+                this.sortingTab.reload();
             } else {
                 throw new IllegalArgumentException("Unknown animation type: " + item);
             }

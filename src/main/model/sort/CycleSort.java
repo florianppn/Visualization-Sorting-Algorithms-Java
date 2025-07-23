@@ -11,28 +11,28 @@ import main.model.*;
 public class CycleSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
 
         for (int cycleStart = 0; cycleStart < n - 1; cycleStart++) {
-            int item = sl.getElement(cycleStart);
+            int item = sortingTab.getElement(cycleStart);
             int pos = cycleStart;
 
             for (int i = cycleStart + 1; i < n; i++) {
-                if (sl.getElement(i) < item) {
+                if (sortingTab.getElement(i) < item) {
                     pos++;
                 }
             }
 
             if (pos == cycleStart) continue;
 
-            while (item == sl.getElement(pos)) {
+            while (item == sortingTab.getElement(pos)) {
                 pos++;
             }
 
             if (pos != cycleStart) {
-                int temp = sl.getElement(pos);
-                sl.set(pos, item);
+                int temp = sortingTab.getElement(pos);
+                sortingTab.set(pos, item);
                 item = temp;
             }
 
@@ -40,18 +40,18 @@ public class CycleSort implements SortingStrategy {
                 pos = cycleStart;
 
                 for (int i = cycleStart + 1; i < n; i++) {
-                    if (sl.getElement(i) < item) {
+                    if (sortingTab.getElement(i) < item) {
                         pos++;
                     }
                 }
 
-                while (item == sl.getElement(pos)) {
+                while (item == sortingTab.getElement(pos)) {
                     pos++;
                 }
 
-                if (item != sl.getElement(pos)) {
-                    int temp = sl.getElement(pos);
-                    sl.set(pos, item);
+                if (item != sortingTab.getElement(pos)) {
+                    int temp = sortingTab.getElement(pos);
+                    sortingTab.set(pos, item);
                     item = temp;
                 }
             }

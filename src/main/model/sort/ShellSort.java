@@ -11,17 +11,17 @@ import main.model.*;
 public class ShellSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
         for (int gap = n / 2; gap > 0; gap /= 2) {
             for (int i = gap; i < n; i++) {
-                int temp = sl.getElement(i);
+                int temp = sortingTab.getElement(i);
                 int j = i;
-                while (j >= gap && sl.getElement(j - gap) > temp) {
-                    sl.set(j, sl.getElement(j - gap));
+                while (j >= gap && sortingTab.getElement(j - gap) > temp) {
+                    sortingTab.set(j, sortingTab.getElement(j - gap));
                     j -= gap;
                 }
-                sl.set(j, temp);
+                sortingTab.set(j, temp);
             }
         }
     }

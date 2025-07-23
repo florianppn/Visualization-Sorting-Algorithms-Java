@@ -11,14 +11,14 @@ import main.model.*;
 public class RadixSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
-        int max = this.getMax(sl);
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
+        int max = this.getMax(sortingTab);
 
         // Appliquer le tri pour chaque position de chiffre : unités, dizaines, centaines, etc...
         int exp = 1;
         while (max / exp > 0) {
-            countingSort(sl, n, exp);
+            countingSort(sortingTab, n, exp);
             exp *= 10; // Passer à la position de chiffre suivante
         }
     }
@@ -26,14 +26,14 @@ public class RadixSort implements SortingStrategy {
     /**
      * Trouver le plus grand élément dans la liste.
      *
-     * @param sl La liste à trier.
+     * @param sortingTab La liste à trier.
      * @return Le plus grand élément de la liste.
      */
-    private int getMax(SortingList sl) {
-        int max = sl.getElement(0);
-        for (int i = 1; i < sl.getSize(); i++) {
-            if (sl.getElement(i) > max) {
-                max = sl.getElement(i);
+    private int getMax(SortingTab sortingTab) {
+        int max = sortingTab.getElement(0);
+        for (int i = 1; i < sortingTab.getSize(); i++) {
+            if (sortingTab.getElement(i) > max) {
+                max = sortingTab.getElement(i);
             }
         }
         return max;
@@ -42,17 +42,17 @@ public class RadixSort implements SortingStrategy {
     /**
      * Tri par comptage pour un chiffre donné à la position donnée.
      *
-     * @param sl La liste à trier.
+     * @param sortingTab La liste a trier.
      * @param n La taille de la liste.
      * @param exp exp = 10^i où i est la position du chiffre.
      */
-    private void countingSort(SortingList sl, int n, int exp) {
+    private void countingSort(SortingTab sortingTab, int n, int exp) {
         int[] end = new int[n];
         int[] count = new int[10];
 
         // Compter les occurrences des chiffres à la position exp
         for (int i = 0; i < n; i++) {
-            int digit = (sl.getElement(i) / exp) % 10;
+            int digit = (sortingTab.getElement(i) / exp) % 10;
             count[digit]++;
         }
 
@@ -63,13 +63,13 @@ public class RadixSort implements SortingStrategy {
 
         // Construire le tableau de sortie trié
         for (int i = n - 1; i >= 0; i--) {
-            int digit = (sl.getElement(i) / exp) % 10;
-            end[count[digit] - 1] = sl.getElement(i);
+            int digit = (sortingTab.getElement(i) / exp) % 10;
+            end[count[digit] - 1] = sortingTab.getElement(i);
             count[digit]--;
         }
 
         for (int i = 0; i < n; i++) {
-            sl.set(i, end[i]);
+            sortingTab.set(i, end[i]);
         }
     }
 

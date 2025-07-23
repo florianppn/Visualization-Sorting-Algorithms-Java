@@ -13,8 +13,8 @@ public interface SortingStrategy {
     /**
      * Méthode de tri.
      *
-     * @param sl Le tableau à trier.
+     * @param sortingTab Le tableau a trier.
      */
-    void sortingAlgorithm(SortingList sl);
+    void sortingAlgorithm(SortingTab sortingTab);
     
 }

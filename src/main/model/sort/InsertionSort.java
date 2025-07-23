@@ -11,16 +11,16 @@ import main.model.*;
 public class InsertionSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
         for (int i = 1; i < n; i++) {
-            int k = sl.getElement(i);
+            int k = sortingTab.getElement(i);
             int j = i - 1;
-            while (j >= 0 && sl.getElement(j) > k) {
-                sl.set(j + 1, sl.getElement(j)); 
+            while (j >= 0 && sortingTab.getElement(j) > k) {
+                sortingTab.set(j + 1, sortingTab.getElement(j)); 
                 j--;
             }
-            sl.set(j + 1, k);
+            sortingTab.set(j + 1, k);
         }
     }
 }

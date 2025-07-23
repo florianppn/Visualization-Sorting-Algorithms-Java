@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Représente un générateur de tri aléatoire basé sur l'entropie.
  * 
- * @author Florian Pépin
+ * @author Tom David et Florian Pépin
  * @version 2.0
  */
 public class GeneratorWithEntropy {

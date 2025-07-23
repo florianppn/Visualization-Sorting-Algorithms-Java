@@ -13,14 +13,14 @@ import java.util.*;
 public class PigeonholeSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
-        int min = sl.getElement(0);
-        int max = sl.getElement(0);
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
+        int min = sortingTab.getElement(0);
+        int max = sortingTab.getElement(0);
 
         for (int i = 1; i < n; i++) {
-            if (sl.getElement(i) < min) min = sl.getElement(i);
-            if (sl.getElement(i) > max) max = sl.getElement(i);
+            if (sortingTab.getElement(i) < min) min = sortingTab.getElement(i);
+            if (sortingTab.getElement(i) > max) max = sortingTab.getElement(i);
         }
 
         int range = max - min + 1;
@@ -31,13 +31,13 @@ public class PigeonholeSort implements SortingStrategy {
         }
 
         for (int i = 0; i < n; i++) {
-            pigeonholes[sl.getElement(i) - min].add(sl.getElement(i));
+            pigeonholes[sortingTab.getElement(i) - min].add(sortingTab.getElement(i));
         }
 
         int index = 0;
         for (int i = 0; i < range; i++) {
             for (int num : pigeonholes[i]) {
-                sl.set(index++, num);
+                sortingTab.set(index++, num);
             }
         }
     }

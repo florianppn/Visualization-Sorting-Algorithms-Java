@@ -12,8 +12,8 @@ import java.awt.*;
  */
 public class VBarAnimationView extends AnimationStrategy {
     
-    public VBarAnimationView(SortingList sl) {
-        super(sl);
+    public VBarAnimationView(SortingTab sortingTab) {
+        super(sortingTab);
     }
 
     @Override

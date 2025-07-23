@@ -11,15 +11,15 @@ import main.model.*;
 public class GnomeSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingList sl) {
-        int n = sl.getSize();
+    public void sortingAlgorithm(SortingTab sortingTab) {
+        int n = sortingTab.getSize();
         int pos = 0;
 
         while (pos < n) {
-            if (pos == 0 || sl.getElement(pos) >= sl.getElement(pos - 1)) {
+            if (pos == 0 || sortingTab.getElement(pos) >= sortingTab.getElement(pos - 1)) {
                 pos++;
             } else {
-                sl.swap(pos, pos - 1);
+                sortingTab.swap(pos, pos - 1);
                 pos--;
             }
         }

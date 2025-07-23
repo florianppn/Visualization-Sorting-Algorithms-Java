@@ -16,7 +16,7 @@ import javax.swing.*;
 public abstract class AnimationStrategy extends JPanel implements ModelListener {
 
     protected static int TIME = 6;
-    protected SortingList sl;
+    protected SortingTab sortingTab;
     protected int count;
     protected Timer timer;
     protected ConcurrentLinkedQueue<String> eventTypeBuffer;
@@ -24,9 +24,9 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     protected ConcurrentLinkedQueue<Integer> current1Buffer;
     protected ConcurrentLinkedQueue<Integer> current2Buffer;
 
-    public AnimationStrategy(SortingList sl) {
-        this.sl = sl;
-        this.sl.addModelListener(this);
+    public AnimationStrategy(SortingTab sortingTab) {
+        this.sortingTab = sortingTab;
+        this.sortingTab.addModelListener(this);
         this.count = 0;
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.dataBuffer = new ConcurrentLinkedQueue<>();
@@ -52,7 +52,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     public void setTimer(int s) {
         if (this.timer != null) {
             if (AnimationStrategy.TIME < 0) {
-                throw new IllegalArgumentException("Sleep value cannot be negative.");
+                throw new IllegalArgumentException("sortingTabeep value cannot be negative.");
             }
             AnimationStrategy.TIME = s * 6;
             this.timer.stop();
@@ -78,12 +78,12 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
                 Integer current2 = this.current2Buffer.poll();
                 this.drawSortStep(g, table, current1, current2);
             } else if (eventType.equals("end")) {
-                this.drawSortEnd(g, this.sl.getGeneratorData());
+                this.drawSortEnd(g, this.sortingTab.getGeneratorData());
             } else {
-                this.drawSortStep(g, this.sl.getGeneratorData(), -1, -1);
+                this.drawSortStep(g, this.sortingTab.getGeneratorData(), -1, -1);
             }
         } else {
-            this.drawSortStep(g, this.sl.getGeneratorData(), -1, -1);
+            this.drawSortStep(g, this.sortingTab.getGeneratorData(), -1, -1);
         }
     }
 
@@ -140,7 +140,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
         this.timer = new Timer(AnimationStrategy.TIME, e -> {
             String eventType = this.eventTypeBuffer.peek();
             if (eventType != null) {
-                if (eventType.equals("end") && this.count < this.sl.getGeneratorData().length) {
+                if (eventType.equals("end") && this.count < this.sortingTab.getGeneratorData().length) {
                     this.eventTypeBuffer.offer("end");
                     this.count++;
                 }
@@ -157,9 +157,9 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     @Override
     public void updatedModel(Object source, String eventType) {
         this.eventTypeBuffer.offer(eventType);
-        this.dataBuffer.offer(this.sl.getGeneratorData().clone());
-        this.current1Buffer.offer(this.sl.getCurrent1());
-        this.current2Buffer.offer(this.sl.getCurrent2());
+        this.dataBuffer.offer(this.sortingTab.getGeneratorData().clone());
+        this.current1Buffer.offer(this.sortingTab.getCurrent1());
+        this.current2Buffer.offer(this.sortingTab.getCurrent2());
         if (eventType.equals("run")) this.run();
         if (eventType.equals("reload")) this.repaint();
     }

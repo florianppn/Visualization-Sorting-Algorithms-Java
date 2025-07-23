@@ -22,6 +22,11 @@ public class ControllerSlider implements ChangeListener {
         this.sv = sv;
     }
 
+    /**
+     * Définit la stratégie d'animation.
+     *
+     * @param as la stratégie d'animation à utiliser
+     */
     public void setAnimation(AnimationStrategy as) {
         this.as = as;
     }
