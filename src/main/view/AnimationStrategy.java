@@ -54,9 +54,9 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
             if (AnimationStrategy.TIME < 0) {
                 throw new IllegalArgumentException("sortingTabeep value cannot be negative.");
             }
-            AnimationStrategy.TIME = s * 6;
+            AnimationStrategy.TIME = s;
             this.timer.stop();
-            this.timer.setDelay(AnimationStrategy.TIME);
+            this.timer.setDelay(AnimationStrategy.TIME * 6);
             this.timer.start();
         }
     }
@@ -137,7 +137,7 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
      * Démarre l'animation.
      */
     public void run() {
-        this.timer = new Timer(AnimationStrategy.TIME, e -> {
+        this.timer = new Timer(AnimationStrategy.TIME * 6, e -> {
             String eventType = this.eventTypeBuffer.peek();
             if (eventType != null) {
                 if (eventType.equals("end") && this.count < this.sortingTab.getGeneratorData().length) {
