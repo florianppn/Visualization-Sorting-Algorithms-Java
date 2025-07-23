@@ -6,7 +6,6 @@ import main.generator.*;
 import main.model.sort.*;
 import main.utils.*;
 
-
 /**
  * Représente une liste triable.
  *
