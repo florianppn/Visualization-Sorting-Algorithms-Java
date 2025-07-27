@@ -11,35 +11,35 @@ import main.model.*;
 public class MergeSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        this.mergeSort(sortingTab, 0, sortingTab.getSize() - 1);
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        this.mergeSort(sortingArray, 0, sortingArray.getSize() - 1);
     }
 
     /**
      * Trie la liste en utilisant la méthode de tri fusion.
      *
-     * @param sortingTab La liste a trier.
+     * @param sortingArray La liste a trier.
      * @param left L'indice de gauche de la liste.
      * @param right L'indice de droite de la liste.
      */
-    private void mergeSort(SortingTab sortingTab, int left, int right) {
+    private void mergeSort(SortingArray sortingArray, int left, int right) {
         if (left < right) {
             int mid = (left + right) / 2;
-            mergeSort(sortingTab, left, mid);
-            mergeSort(sortingTab, mid + 1, right);
-            merge(sortingTab, left, mid, right);
+            mergeSort(sortingArray, left, mid);
+            mergeSort(sortingArray, mid + 1, right);
+            merge(sortingArray, left, mid, right);
         }
     }
 
     /**
      * Fusionne deux sous-listes triées en une seule liste triée.
      *
-     * @param sortingTab La liste a trier.
+     * @param sortingArray La liste a trier.
      * @param left L'indice de gauche de la liste.
      * @param mid  L'indice du milieu de la liste.
      * @param right L'indice de droite de la liste.
      */
-    private void merge(SortingTab sortingTab, int left, int mid, int right) {
+    private void merge(SortingArray sortingArray, int left, int mid, int right) {
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
@@ -49,20 +49,20 @@ public class MergeSort implements SortingStrategy {
 
         // Copier les données dans les tableaux temporaires
         for (int i = 0; i < n1; i++) {
-            leftArray[i] = sortingTab.getElement(left + i);
+            leftArray[i] = sortingArray.getElement(left + i);
         }
         for (int j = 0; j < n2; j++) {
-            rightArray[j] = sortingTab.getElement(mid + 1 + j);
+            rightArray[j] = sortingArray.getElement(mid + 1 + j);
         }
 
         // Fusionner les deux sous-listes en triant les éléments
         int i = 0, j = 0, k = left;
         while (i < n1 && j < n2) {
             if (leftArray[i] <= rightArray[j]) {
-                sortingTab.set(k, leftArray[i]);
+                sortingArray.set(k, leftArray[i]);
                 i++;
             } else {
-                sortingTab.set(k, rightArray[j]);
+                sortingArray.set(k, rightArray[j]);
                 j++;
             }
             k++;
@@ -70,14 +70,14 @@ public class MergeSort implements SortingStrategy {
 
         // Copier les éléments restants de la sous-liste gauche
         while (i < n1) {
-            sortingTab.set(k, leftArray[i]);
+            sortingArray.set(k, leftArray[i]);
             i++;
             k++;
         }
 
         // Copier les éléments restants de la sous-liste droite
         while (j < n2) {
-            sortingTab.set(k, rightArray[j]);
+            sortingArray.set(k, rightArray[j]);
             j++;
             k++;
         }

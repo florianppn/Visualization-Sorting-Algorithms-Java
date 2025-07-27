@@ -12,8 +12,11 @@ import java.awt.*;
  */
 public class LineAnimationView extends AnimationStrategy {
 
-    public LineAnimationView(SortingTab sortingTab) {
-        super(sortingTab);
+    private SortingArray sortingArray;
+
+    public LineAnimationView(SortingArray sortingArray) {
+        super(sortingArray);
+        this.sortingArray = sortingArray;
     }
 
     @Override

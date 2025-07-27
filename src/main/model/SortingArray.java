@@ -12,7 +12,7 @@ import main.utils.*;
  * @author Florian Pépin
  * @version 1.0
  */
-public class SortingTab extends AbstractListenableModel implements Runnable {
+public class SortingArray extends AbstractListenableModel implements Runnable {
 
     private SortingStrategy sortingStrategy;
     private GeneratorWithEntropy generatorWithEntropy;
@@ -26,7 +26,7 @@ public class SortingTab extends AbstractListenableModel implements Runnable {
     private String sortName;
     private int size;
 
-    public SortingTab(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
+    public SortingArray(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
         super();
         this.sortingStrategy = sortingStrategy;
         this.generatorWithEntropy = generatorWithEntropy;

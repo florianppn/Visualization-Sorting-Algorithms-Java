@@ -15,23 +15,24 @@ import javax.swing.*;
  */
 public class StatisticView extends JPanel implements ModelListener {
 
-    protected static int TIME = 6;
-    private SortingTab sortingTab;
+    private int time = 6;
+    private int multiplier = 6;
+    private SortingArray sortingArray;
     private JLabel stats;
     private Timer timer;
     private ConcurrentLinkedQueue<String> eventTypeBuffer;
     private ConcurrentLinkedQueue<Integer> comparisonsBuffer;
     private ConcurrentLinkedQueue<Integer> arrayAccessBuffer;
 
-    public StatisticView(SortingTab sortingTab) {
+    public StatisticView(SortingArray sortingArray) {
         super();
-        this.sortingTab = sortingTab;
-        this.sortingTab.addModelListener(this);
+        this.sortingArray = sortingArray;
+        this.sortingArray.addModelListener(this);
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.comparisonsBuffer = new ConcurrentLinkedQueue<>();
         this.arrayAccessBuffer = new ConcurrentLinkedQueue<>();
-        this.stats = new JLabel(this.sortingTab.getSortName() + " Sort" + " - " + this.sortingTab.getComparisons() + " comparisons, " +
-                this.sortingTab.getArrayAccess() + " array accesses, " + this.sortingTab.getDelay() + " ms real delay");
+        this.stats = new JLabel(this.sortingArray.getSortName() + " Sort" + " - " + this.sortingArray.getComparisons() + " comparisons, " +
+                this.sortingArray.getArrayAccess() + " array accesses, " + this.sortingArray.getDelay() + " ms real delay");
         this.stats.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
         this.add(this.stats, BorderLayout.CENTER);
@@ -46,7 +47,7 @@ public class StatisticView extends JPanel implements ModelListener {
             this.eventTypeBuffer.clear();
             this.comparisonsBuffer.clear();
             this.arrayAccessBuffer.clear();
-            this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + 0 +
+            this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + 0 +
                     " comparisons, " + 0 + " array accesses, " +
                     0 + " ms real delay");
         }
@@ -54,12 +55,12 @@ public class StatisticView extends JPanel implements ModelListener {
 
     public void setTimer(int s) {
         if (this.timer != null) {
-            if (StatisticView.TIME < 0) {
+            if (this.time < 0) {
                 throw new IllegalArgumentException("illegal value cannot be negative.");
             }
-            StatisticView.TIME = s * 6;
+            this.time = s;
             this.timer.stop();
-            this.timer.setDelay(StatisticView.TIME);
+            this.timer.setDelay(this.time * this.multiplier);
             this.timer.start();
         }
     }
@@ -68,17 +69,17 @@ public class StatisticView extends JPanel implements ModelListener {
      * Démarre l'animation.
      */
     public void run() {
-        this.timer = new Timer(StatisticView.TIME, e -> {
+        this.timer = new Timer(this.time * this.multiplier, e -> {
             String eventType = this.eventTypeBuffer.poll();
             if (eventType != null ) {
                 if (eventType.equals("step")) {
-                    this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                    this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
                             0 + " ms real delay");
                 } else if (eventType.equals("end")) {
-                    this.stats.setText(this.sortingTab.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                    this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                             " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            this.sortingTab.getDelay() + " ms real delay");
+                            this.sortingArray.getDelay() + " ms real delay");
                 }
             } else {
                 ((Timer) e.getSource()).stop();
@@ -91,8 +92,8 @@ public class StatisticView extends JPanel implements ModelListener {
     @Override
     public void updatedModel(Object source, String eventType) {
         this.eventTypeBuffer.add(eventType);
-        this.comparisonsBuffer.add(this.sortingTab.getComparisons());
-        this.arrayAccessBuffer.add(this.sortingTab.getArrayAccess());
+        this.comparisonsBuffer.add(this.sortingArray.getComparisons());
+        this.arrayAccessBuffer.add(this.sortingArray.getArrayAccess());
         if (eventType.equals("run")) this.run();
     }
 

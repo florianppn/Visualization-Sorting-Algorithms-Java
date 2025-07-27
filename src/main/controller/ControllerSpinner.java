@@ -15,11 +15,11 @@ import javax.swing.event.ChangeListener;
  */
 public class ControllerSpinner implements ChangeListener {
 
-    private SortingTab sortingTab;
+    private SortingArray sortingArray;
     private GUI gui;
 
-    public ControllerSpinner(SortingTab sortingTab, GUI gui) {
-        this.sortingTab = sortingTab;
+    public ControllerSpinner(SortingArray sortingArray, GUI gui) {
+        this.sortingArray = sortingArray;
         this.gui = gui;
     }
 
@@ -29,8 +29,8 @@ public class ControllerSpinner implements ChangeListener {
             float entropy = ((Double) ((JSpinner) e.getSource()).getValue()).floatValue();
             this.gui.getAnimation().stopTimer();
             this.gui.getStatisticView().stopTimer();
-            this.sortingTab.setGeneratorData(entropy);
-            this.sortingTab.reload();
+            this.sortingArray.setGeneratorData(entropy);
+            this.sortingArray.reload();
         }
     }
 

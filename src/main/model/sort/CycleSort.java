@@ -11,28 +11,28 @@ import main.model.*;
 public class CycleSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
 
         for (int cycleStart = 0; cycleStart < n - 1; cycleStart++) {
-            int item = sortingTab.getElement(cycleStart);
+            int item = sortingArray.getElement(cycleStart);
             int pos = cycleStart;
 
             for (int i = cycleStart + 1; i < n; i++) {
-                if (sortingTab.getElement(i) < item) {
+                if (sortingArray.getElement(i) < item) {
                     pos++;
                 }
             }
 
             if (pos == cycleStart) continue;
 
-            while (item == sortingTab.getElement(pos)) {
+            while (item == sortingArray.getElement(pos)) {
                 pos++;
             }
 
             if (pos != cycleStart) {
-                int temp = sortingTab.getElement(pos);
-                sortingTab.set(pos, item);
+                int temp = sortingArray.getElement(pos);
+                sortingArray.set(pos, item);
                 item = temp;
             }
 
@@ -40,18 +40,18 @@ public class CycleSort implements SortingStrategy {
                 pos = cycleStart;
 
                 for (int i = cycleStart + 1; i < n; i++) {
-                    if (sortingTab.getElement(i) < item) {
+                    if (sortingArray.getElement(i) < item) {
                         pos++;
                     }
                 }
 
-                while (item == sortingTab.getElement(pos)) {
+                while (item == sortingArray.getElement(pos)) {
                     pos++;
                 }
 
-                if (item != sortingTab.getElement(pos)) {
-                    int temp = sortingTab.getElement(pos);
-                    sortingTab.set(pos, item);
+                if (item != sortingArray.getElement(pos)) {
+                    int temp = sortingArray.getElement(pos);
+                    sortingArray.set(pos, item);
                     item = temp;
                 }
             }

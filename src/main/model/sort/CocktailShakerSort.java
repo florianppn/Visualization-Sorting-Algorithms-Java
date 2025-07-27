@@ -11,8 +11,8 @@ import main.model.*;
 public class CocktailShakerSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         boolean echange = true;
         int start = 0;
         int end = n - 1;
@@ -20,8 +20,8 @@ public class CocktailShakerSort implements SortingStrategy {
         while (echange) {
             echange = false;
             for (int i = start; i < end; i++) {
-                if (sortingTab.getElement(i) > sortingTab.getElement(i + 1)) {
-                    sortingTab.swap(i, i + 1);
+                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                    sortingArray.swap(i, i + 1);
                     echange = true;
                 }
             }
@@ -31,8 +31,8 @@ public class CocktailShakerSort implements SortingStrategy {
             echange = false;
 
             for (int i = end; i > start; i--) {
-                if (sortingTab.getElement(i) < sortingTab.getElement(i - 1)) {
-                    sortingTab.swap(i, i - 1);
+                if (sortingArray.getElement(i) < sortingArray.getElement(i - 1)) {
+                    sortingArray.swap(i, i - 1);
                     echange = true;
                 }
             }

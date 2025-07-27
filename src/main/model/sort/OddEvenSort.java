@@ -11,23 +11,23 @@ import main.model.*;
 public class OddEvenSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         boolean sorted = false;
 
         while (!sorted) {
             sorted = true;
 
             for (int i = 1; i < n - 1; i += 2) {
-                if (sortingTab.getElement(i) > sortingTab.getElement(i + 1)) {
-                    sortingTab.swap(i, i + 1);
+                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                    sortingArray.swap(i, i + 1);
                     sorted = false;
                 }
             }
 
             for (int i = 0; i < n - 1; i += 2) {
-                if (sortingTab.getElement(i) > sortingTab.getElement(i + 1)) {
-                    sortingTab.swap(i, i + 1);
+                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                    sortingArray.swap(i, i + 1);
                     sorted = false;
                 }
             }

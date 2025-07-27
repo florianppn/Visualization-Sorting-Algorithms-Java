@@ -17,13 +17,13 @@ import java.util.function.Supplier;
  */
 public class ControllerSortMenu implements ActionListener {
 
-    private SortingTab sortingTab;
+    private SortingArray sortingArray;
     private GUI gui;
     private Map<String, Supplier<SortingStrategy>> sortFactories;
 
-    public ControllerSortMenu(SortingTab sortingTab, GUI gui) {
+    public ControllerSortMenu(SortingArray sortingArray, GUI gui) {
         super();
-        this.sortingTab = sortingTab;
+        this.sortingArray = sortingArray;
         this.gui = gui;
         this.sortFactories = new HashMap<>();
         this.sortFactories.put("Bubble", BubbleSort::new);
@@ -48,12 +48,11 @@ public class ControllerSortMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JMenuItem) {
             String item = ((JMenuItem) e.getSource()).getText();
-            this.gui.refresh();
             Supplier<SortingStrategy> factory = sortFactories.get(item);
             if(factory != null) {
                 this.gui.getAnimation().stopTimer();
                 this.gui.getStatisticView().stopTimer();
-                this.sortingTab.reload(factory.get(), item);
+                this.sortingArray.reload(factory.get(), item);
             } else {
                 throw new IllegalArgumentException("Unknown sorting algorithm: " + item);
             }

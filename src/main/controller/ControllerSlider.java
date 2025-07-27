@@ -13,30 +13,19 @@ import javax.swing.event.*;
  */
 public class ControllerSlider implements ChangeListener {
 
-    private AnimationStrategy as;
-    private StatisticView sv;
+    private GUI gui;
     
-    public ControllerSlider(AnimationStrategy as, StatisticView sv) {
+    public ControllerSlider(GUI gui) {
         super();
-        this.as = as;
-        this.sv = sv;
-    }
-
-    /**
-     * Définit la stratégie d'animation.
-     *
-     * @param as la stratégie d'animation à utiliser
-     */
-    public void setAnimation(AnimationStrategy as) {
-        this.as = as;
+        this.gui = gui;
     }
     
     @Override
     public void stateChanged(ChangeEvent e) {
         if (e.getSource() instanceof JSlider) {
             int sleep = ((JSlider) e.getSource()).getValue();
-            this.as.setTimer(sleep);
-            this.sv.setTimer(sleep);
+            this.gui.getAnimation().setTimer(sleep);
+            this.gui.getStatisticView().setTimer(sleep);
         }
     }
     

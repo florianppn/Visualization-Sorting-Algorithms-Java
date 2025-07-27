@@ -16,19 +16,19 @@ import java.util.function.Supplier;
  */
 public class ControllerAnimationMenu implements ActionListener {
 
-    private SortingTab sortingTab;
+    private SortingArray sortingArray;
     private GUI gui;
     private Map<String, Supplier<AnimationStrategy>> sortFactories;
 
-    public ControllerAnimationMenu(SortingTab sortingTab, GUI gui) {
+    public ControllerAnimationMenu(SortingArray sortingArray, GUI gui) {
         super();
-        this.sortingTab = sortingTab;
+        this.sortingArray = sortingArray;
         this.gui = gui;
         this.sortFactories = new HashMap<>();
-        this.sortFactories.put("Vbars", () -> new VBarAnimationView(this.sortingTab));
-        this.sortFactories.put("Points", () -> new PointAnimationView(this.sortingTab));
-        this.sortFactories.put("Pyramid", () -> new PyramidAnimationView(this.sortingTab));
-        this.sortFactories.put("Lines", () -> new LineAnimationView(this.sortingTab));
+        this.sortFactories.put("Vbars", () -> new VBarAnimationView(this.sortingArray));
+        this.sortFactories.put("Points", () -> new PointAnimationView(this.sortingArray));
+        this.sortFactories.put("Pyramid", () -> new PyramidAnimationView(this.sortingArray));
+        this.sortFactories.put("Lines", () -> new LineAnimationView(this.sortingArray));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ControllerAnimationMenu implements ActionListener {
                 this.gui.getAnimation().stopTimer();
                 this.gui.getStatisticView().stopTimer();
                 this.gui.setAnimation(factory.get());
-                this.sortingTab.reload();
+                this.sortingArray.reload();
             } else {
                 throw new IllegalArgumentException("Unknown animation type: " + item);
             }

@@ -15,17 +15,17 @@ public class TimSort implements SortingStrategy {
     private static final int RUN = 32;
 
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         for (int i = 0; i < n; i += RUN) {
-            this.insertionSort(sortingTab, i, Math.min(i + RUN - 1, n - 1));
+            this.insertionSort(sortingArray, i, Math.min(i + RUN - 1, n - 1));
         }
         for (int size = RUN; size < n; size = 2 * size) {
             for (int left = 0; left < n; left += 2 * size) {
                 int mid = left + size - 1;
                 int right = Math.min(left + 2 * size - 1, n - 1);
                 if (mid < right)
-                    merge(sortingTab, left, mid, right);
+                    merge(sortingArray, left, mid, right);
             }
         }
     }
@@ -33,31 +33,31 @@ public class TimSort implements SortingStrategy {
     /**
      * Tri par insertion d'une sous-liste de la liste principale.
      *
-     * @param sortingTab La liste a trier.
+     * @param sortingArray La liste a trier.
      * @param left L'indice de début de la sous-liste.
      * @param right L'indice de fin de la sous-liste.
      */
-    private void insertionSort(SortingTab sortingTab, int left, int right) {
+    private void insertionSort(SortingArray sortingArray, int left, int right) {
         for (int i = left + 1; i <= right; i++) {
-            int temp = sortingTab.getElement(i);
+            int temp = sortingArray.getElement(i);
             int j = i - 1;
-            while (j >= left && sortingTab.getElement(j) > temp) {
-                sortingTab.set(j + 1, sortingTab.getElement(j));
+            while (j >= left && sortingArray.getElement(j) > temp) {
+                sortingArray.set(j + 1, sortingArray.getElement(j));
                 j--;
             }
-            sortingTab.set(j + 1, temp);
+            sortingArray.set(j + 1, temp);
         }
     }
 
     /**
      * Fusion de deux sous-listes triées.
      *
-     * @param sortingTab La liste contenant les sous-listes à fusionner.
+     * @param sortingArray La liste contenant les sous-listes à fusionner.
      * @param left L'indice de début de la première sous-liste.
      * @param mid L'indice de fin de la première sous-liste et début de la deuxième.
      * @param right L'indice de fin de la deuxième sous-liste.
      */
-    private void merge(SortingTab sortingTab, int left, int mid, int right) {
+    private void merge(SortingArray sortingArray, int left, int mid, int right) {
         int len1 = mid - left + 1;
         int len2 = right - mid;
         
@@ -65,31 +65,31 @@ public class TimSort implements SortingStrategy {
         int[] rightArr = new int[len2];
 
         for (int i = 0; i < len1; i++)
-            leftArr[i] = sortingTab.getElement(left + i);
+            leftArr[i] = sortingArray.getElement(left + i);
         for (int i = 0; i < len2; i++)
-            rightArr[i] = sortingTab.getElement(mid + 1 + i);
+            rightArr[i] = sortingArray.getElement(mid + 1 + i);
 
         int i = 0, j = 0, k = left;
 
         while (i < len1 && j < len2) {
             if (leftArr[i] <= rightArr[j]) {
-                sortingTab.set(k, leftArr[i]);
+                sortingArray.set(k, leftArr[i]);
                 i++;
             } else {
-                sortingTab.set(k, rightArr[j]);
+                sortingArray.set(k, rightArr[j]);
                 j++;
             }
             k++;
         }
 
         while (i < len1) {
-            sortingTab.set(k, leftArr[i]);
+            sortingArray.set(k, leftArr[i]);
             i++;
             k++;
         }
 
         while (j < len2) {
-            sortingTab.set(k, rightArr[j]);
+            sortingArray.set(k, rightArr[j]);
             j++;
             k++;
         }

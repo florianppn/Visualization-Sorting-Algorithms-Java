@@ -11,15 +11,15 @@ import main.model.*;
 public class CountingSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         if (n == 0) return;
 
-        int min = sortingTab.getElement(0);
-        int max = sortingTab.getElement(0);
+        int min = sortingArray.getElement(0);
+        int max = sortingArray.getElement(0);
         for (int i = 1; i < n; i++) {
-            if (sortingTab.getElement(i) > max) max = sortingTab.getElement(i);
-            if (sortingTab.getElement(i) < min) min = sortingTab.getElement(i);
+            if (sortingArray.getElement(i) > max) max = sortingArray.getElement(i);
+            if (sortingArray.getElement(i) < min) min = sortingArray.getElement(i);
         }
 
         int range = max - min + 1; // Ajustement pour inclure les valeurs négatives
@@ -28,7 +28,7 @@ public class CountingSort implements SortingStrategy {
 
         // Compter les occurrences
         for (int i = 0; i < n; i++) {
-            count[sortingTab.getElement(i) - min]++;
+            count[sortingArray.getElement(i) - min]++;
         }
 
         // Convertir count[] en positions cumulatives
@@ -37,12 +37,12 @@ public class CountingSort implements SortingStrategy {
         }
 
         for (int i = n - 1; i >= 0; i--) {
-            output[count[sortingTab.getElement(i) - min] - 1] = sortingTab.getElement(i);
-            count[sortingTab.getElement(i) - min]--;
+            output[count[sortingArray.getElement(i) - min] - 1] = sortingArray.getElement(i);
+            count[sortingArray.getElement(i) - min]--;
         }
 
         for (int i = 0; i < n; i++) {
-            sortingTab.set(i, output[i]);
+            sortingArray.set(i, output[i]);
         }
     }
 

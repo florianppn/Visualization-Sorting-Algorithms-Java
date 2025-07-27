@@ -13,15 +13,15 @@ import java.util.*;
 public class BucketSort implements SortingStrategy {
     
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         if (n <= 0) return;
 
-        int min = sortingTab.getElement(0);
-        int max = sortingTab.getElement(0);
+        int min = sortingArray.getElement(0);
+        int max = sortingArray.getElement(0);
         for (int i = 1; i < n; i++) {
-            if (sortingTab.getElement(i) > max) max = sortingTab.getElement(i);
-            if (sortingTab.getElement(i) < min) min = sortingTab.getElement(i);
+            if (sortingArray.getElement(i) > max) max = sortingArray.getElement(i);
+            if (sortingArray.getElement(i) < min) min = sortingArray.getElement(i);
         }
 
         int bucketCount = (int) Math.sqrt(n); // Nombre optimal de buckets
@@ -35,7 +35,7 @@ public class BucketSort implements SortingStrategy {
 
         // Distribution des éléments dans les buckets
         for (int i = 0; i < n; i++) {
-            int value = sortingTab.getElement(i);
+            int value = sortingArray.getElement(i);
             int bucketIndex = (value - min) * (bucketCount - 1) / (max - min + 1);
             buckets[bucketIndex].add(value);
         }
@@ -45,7 +45,7 @@ public class BucketSort implements SortingStrategy {
         for (int i = 0; i < bucketCount; i++) {
             Collections.sort(buckets[i]);
             for (int num : buckets[i]) {
-                sortingTab.set(index++, num);
+                sortingArray.set(index++, num);
             }
         }
     }

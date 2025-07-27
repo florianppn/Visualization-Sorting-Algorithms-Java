@@ -12,8 +12,11 @@ import java.awt.*;
  */
 public class PyramidAnimationView extends AnimationStrategy {
 
-    public PyramidAnimationView(SortingTab sortingTab) {
-        super(sortingTab);
+    private SortingArray sortingArray;
+
+    public PyramidAnimationView(SortingArray sortingArray) {
+        super(sortingArray);
+        this.sortingArray = sortingArray;
     }
 
     @Override

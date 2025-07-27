@@ -15,8 +15,9 @@ import javax.swing.*;
  */
 public abstract class AnimationStrategy extends JPanel implements ModelListener {
 
-    protected static int TIME = 6;
-    protected SortingTab sortingTab;
+    protected int time = 6;
+    protected int multiplier = 6;
+    protected SortingArray sortingArray;
     protected int count;
     protected Timer timer;
     protected ConcurrentLinkedQueue<String> eventTypeBuffer;
@@ -24,9 +25,9 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     protected ConcurrentLinkedQueue<Integer> current1Buffer;
     protected ConcurrentLinkedQueue<Integer> current2Buffer;
 
-    public AnimationStrategy(SortingTab sortingTab) {
-        this.sortingTab = sortingTab;
-        this.sortingTab.addModelListener(this);
+    public AnimationStrategy(SortingArray sortingArray) {
+        this.sortingArray = sortingArray;
+        this.sortingArray.addModelListener(this);
         this.count = 0;
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.dataBuffer = new ConcurrentLinkedQueue<>();
@@ -51,12 +52,12 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
 
     public void setTimer(int s) {
         if (this.timer != null) {
-            if (AnimationStrategy.TIME < 0) {
-                throw new IllegalArgumentException("sortingTabeep value cannot be negative.");
+            if (this.time < 0) {
+                throw new IllegalArgumentException("Illegal value cannot be negative.");
             }
-            AnimationStrategy.TIME = s;
+            this.time = s;
             this.timer.stop();
-            this.timer.setDelay(AnimationStrategy.TIME * 6);
+            this.timer.setDelay(this.time * this.multiplier);
             this.timer.start();
         }
     }
@@ -78,12 +79,12 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
                 Integer current2 = this.current2Buffer.poll();
                 this.drawSortStep(g, table, current1, current2);
             } else if (eventType.equals("end")) {
-                this.drawSortEnd(g, this.sortingTab.getGeneratorData());
+                this.drawSortEnd(g, this.sortingArray.getGeneratorData());
             } else {
-                this.drawSortStep(g, this.sortingTab.getGeneratorData(), -1, -1);
+                this.drawSortStep(g, this.sortingArray.getGeneratorData(), -1, -1);
             }
         } else {
-            this.drawSortStep(g, this.sortingTab.getGeneratorData(), -1, -1);
+            this.drawSortStep(g, this.sortingArray.getGeneratorData(), -1, -1);
         }
     }
 
@@ -137,10 +138,10 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
      * Démarre l'animation.
      */
     public void run() {
-        this.timer = new Timer(AnimationStrategy.TIME * 6, e -> {
+        this.timer = new Timer(this.time * this.multiplier, e -> {
             String eventType = this.eventTypeBuffer.peek();
             if (eventType != null) {
-                if (eventType.equals("end") && this.count < this.sortingTab.getGeneratorData().length) {
+                if (eventType.equals("end") && this.count < this.sortingArray.getGeneratorData().length) {
                     this.eventTypeBuffer.offer("end");
                     this.count++;
                 }
@@ -157,9 +158,9 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     @Override
     public void updatedModel(Object source, String eventType) {
         this.eventTypeBuffer.offer(eventType);
-        this.dataBuffer.offer(this.sortingTab.getGeneratorData().clone());
-        this.current1Buffer.offer(this.sortingTab.getCurrent1());
-        this.current2Buffer.offer(this.sortingTab.getCurrent2());
+        this.dataBuffer.offer(this.sortingArray.getGeneratorData().clone());
+        this.current1Buffer.offer(this.sortingArray.getCurrent1());
+        this.current2Buffer.offer(this.sortingArray.getCurrent2());
         if (eventType.equals("run")) this.run();
         if (eventType.equals("reload")) this.repaint();
     }

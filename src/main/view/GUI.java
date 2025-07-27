@@ -14,7 +14,7 @@ import javax.swing.*;
  */
 public class GUI extends JFrame {
     
-    private SortingTab sortingTab;
+    private SortingArray sortingArray;
     private AnimationStrategy animation;
     private StatisticView statisticView;
     private ControllerButtons controllerButtons;
@@ -35,16 +35,16 @@ public class GUI extends JFrame {
     };
     private String[] animations = {"Vbars", "Points", "Pyramid", "Lines"};
     
-    public GUI(SortingTab sortingTab) {
-        super("Sorting Algorithms");
-        this.sortingTab = sortingTab;
-        this.animation = new VBarAnimationView(this.sortingTab);
-        this.statisticView = new StatisticView(this.sortingTab);
-        this.controllerButtons = new ControllerButtons(this.sortingTab, this);
-        this.controllerSortMenu = new ControllerSortMenu(this.sortingTab, this);
-        this.controllerAnimationMenu = new ControllerAnimationMenu(this.sortingTab, this);
-        this.controllerSlider = new ControllerSlider(this.animation, this.statisticView);
-        this.controllerSpinner = new ControllerSpinner(this.sortingTab, this);
+    public GUI(SortingArray sortingArray) {
+        super("Visualization of Sorting Algorithms");
+        this.sortingArray = sortingArray;
+        this.animation = new VBarAnimationView(this.sortingArray);
+        this.statisticView = new StatisticView(this.sortingArray);
+        this.controllerButtons = new ControllerButtons(this.sortingArray, this);
+        this.controllerSortMenu = new ControllerSortMenu(this.sortingArray, this);
+        this.controllerAnimationMenu = new ControllerAnimationMenu(this.sortingArray, this);
+        this.controllerSlider = new ControllerSlider(this);
+        this.controllerSpinner = new ControllerSpinner(this.sortingArray, this);
         this.animationMenuBar = new Menu(this.controllerAnimationMenu, this.animations, "Animations");
         this.sortMenuBar = new Menu(this.controllerSortMenu, this.sorts, "Sorts");
         this.reloadButton = new Button(this.controllerButtons, "RELOAD", "reload.png");
@@ -73,9 +73,8 @@ public class GUI extends JFrame {
      * @param a La nouvelle stratégie d'animation.
      */
     public void setAnimation(AnimationStrategy a) {
-        this.sortingTab.removeModelListener(this.animation);
+        this.sortingArray.removeModelListener(this.animation);
         this.animation = a;
-        this.controllerSlider.setAnimation(this.animation);
         this.refresh();
     }
 
@@ -109,7 +108,7 @@ public class GUI extends JFrame {
         menuPanel.add(this.sortMenuBar);
         menuPanel.add(this.animationMenuBar);
 
-        JLabel labelEntropy = new JLabel("entropy of table : ");
+        JLabel labelEntropy = new JLabel("array entropy : ");
         JPanel entropyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         entropyPanel.setBackground(Color.WHITE);
         entropyPanel.add(labelEntropy);

@@ -11,16 +11,16 @@ import main.model.*;
 public class SelectionSort implements SortingStrategy {
 
     @Override
-    public void sortingAlgorithm(SortingTab sortingTab) {
-        int n = sortingTab.getSize();
+    public void sortingAlgorithm(SortingArray sortingArray) {
+        int n = sortingArray.getSize();
         for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < n; j++) {
-                if (sortingTab.getElement(j) < sortingTab.getElement(minIndex)) {
+                if (sortingArray.getElement(j) < sortingArray.getElement(minIndex)) {
                     minIndex = j;
                 }
             }
-            if (minIndex != i) sortingTab.swap(i, minIndex);
+            if (minIndex != i) sortingArray.swap(i, minIndex);
         }
     }
 }

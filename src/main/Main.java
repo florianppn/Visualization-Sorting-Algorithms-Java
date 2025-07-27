@@ -38,8 +38,8 @@ public class Main {
      */
     public static void main(String[] args) {
         GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY, SIZE);
-        SortingTab sortingTab = new SortingTab(new QuickSort(), "Quick", rgs);
-        GUI g = new GUI(sortingTab);
+        SortingArray sortingArray = new SortingArray(new QuickSort(), "Quick", rgs);
+        GUI g = new GUI(sortingArray);
     }
     
 }
