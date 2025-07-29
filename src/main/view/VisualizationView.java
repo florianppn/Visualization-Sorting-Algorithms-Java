@@ -1,23 +1,26 @@
 package main.view;
 
-import main.model.*;
+import main.model.SortingArray;
 import main.utils.*;
+import main.view.animation.*;
 
-import java.awt.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.*;
 
 /**
- * Représente une stratégie d'animation pour les tris.
+ * Représente la vue de visualisation des algorithmes de tri.
+ * Elle utilise une stratégie d'animation pour dessiner les étapes du tri.
  *
  * @author Florian Pépin
  * @version 1.0
  */
-public abstract class AnimationStrategy extends JPanel implements ModelListener {
+public class VisualizationView extends JPanel implements ModelListener {
 
+    private SortingArray sortingArray;
+    private AnimationStrategy animationStrategy;
     protected int time = 6;
     protected int multiplier = 6;
-    protected SortingArray sortingArray;
     protected int count;
     protected Timer timer;
     protected ConcurrentLinkedQueue<String> eventTypeBuffer;
@@ -25,15 +28,25 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
     protected ConcurrentLinkedQueue<Integer> current1Buffer;
     protected ConcurrentLinkedQueue<Integer> current2Buffer;
 
-    public AnimationStrategy(SortingArray sortingArray) {
+    public VisualizationView(SortingArray sortingArray, AnimationStrategy animationStrategy) {
+        super();
         this.sortingArray = sortingArray;
         this.sortingArray.addModelListener(this);
+        this.animationStrategy = animationStrategy;
         this.count = 0;
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.dataBuffer = new ConcurrentLinkedQueue<>();
         this.current1Buffer = new ConcurrentLinkedQueue<>();
         this.current2Buffer = new ConcurrentLinkedQueue<>();
-        setBackground(Color.BLACK);
+        this.setBackground(Color.BLACK);
+    }
+
+    public AnimationStrategy getAnimationStrategy() {
+        return animationStrategy;
+    }
+
+    public void setAnimationStrategy(AnimationStrategy animationStrategy) {
+        this.animationStrategy = animationStrategy;
     }
 
     /**
@@ -77,62 +90,16 @@ public abstract class AnimationStrategy extends JPanel implements ModelListener 
                 int[] table = this.dataBuffer.poll();
                 Integer current1 = this.current1Buffer.poll();
                 Integer current2 = this.current2Buffer.poll();
-                this.drawSortStep(g, table, current1, current2);
+                this.animationStrategy.drawSortStep(g, table, this.getWidth(), this.getHeight(), current1, current2);
             } else if (eventType.equals("end")) {
-                this.drawSortEnd(g, this.sortingArray.getGeneratorData());
+                this.animationStrategy.drawSortEnd(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), this.count);
             } else {
-                this.drawSortStep(g, this.sortingArray.getGeneratorData(), -1, -1);
+                this.animationStrategy.drawSortStep(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), -1, -1);
             }
         } else {
-            this.drawSortStep(g, this.sortingArray.getGeneratorData(), -1, -1);
+            this.animationStrategy.drawSortStep(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), -1, -1);
         }
     }
-
-    /**
-     * Dessine les éléments du tri.
-     * Les éléments en cours de tri sont en vert et rouge.
-     * Les éléments non triés sont en blanc.
-     *
-     * @param g l'objet Graphics.
-     */
-    public void drawSortStep(Graphics g, int[] table, int current1, int current2) {
-        for (int i = 0; i < table.length; i++) {
-            if (current1 == i) {
-                g.setColor(Color.GREEN);
-            } else if (current2 == i) {
-                g.setColor(Color.RED);
-            } else {
-                g.setColor(Color.WHITE);
-            }
-            this.drawGeometricShape(g, table, i);
-        }
-    }
-
-    /**
-     * Dessine les éléments du tri à la fin.
-     * Les éléments triés sont en vert.
-     * Les éléments non triés sont en blanc.
-     *
-     * @param g l'objet Graphics.
-     */
-    public void drawSortEnd(Graphics g, int[] table) {
-        for (int i=0; i < table.length; i++) {
-            if(this.count >= i) {
-                g.setColor(Color.GREEN);
-            } else {
-                g.setColor(Color.WHITE);
-            }
-            this.drawGeometricShape(g, table, i);
-        }
-    }
-
-    /**
-     * Dessine une forme géométrique.
-     *
-     * @param g l'objet Graphics.
-     * @param i l'indice de l'élément dans le tableau de tri.
-     */
-    abstract void drawGeometricShape(Graphics g, int[] table, int i);
 
     /**
      * Démarre l'animation.

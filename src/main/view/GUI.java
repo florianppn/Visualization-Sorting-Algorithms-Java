@@ -2,6 +2,7 @@ package main.view;
 
 import main.model.*;
 import main.controller.*;
+import main.view.animation.*;
 
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +16,7 @@ import javax.swing.*;
 public class GUI extends JFrame {
     
     private SortingArray sortingArray;
-    private AnimationStrategy animation;
+    private VisualizationView visualizationView;
     private StatisticView statisticView;
     private ControllerButtons controllerButtons;
     private ControllerSortMenu controllerSortMenu;
@@ -38,7 +39,7 @@ public class GUI extends JFrame {
     public GUI(SortingArray sortingArray) {
         super("Visualization of Sorting Algorithms");
         this.sortingArray = sortingArray;
-        this.animation = new VBarAnimationView(this.sortingArray);
+        this.visualizationView = new VisualizationView(this.sortingArray, new VBarAnimation());
         this.statisticView = new StatisticView(this.sortingArray);
         this.controllerButtons = new ControllerButtons(this.sortingArray, this);
         this.controllerSortMenu = new ControllerSortMenu(this.sortingArray, this);
@@ -59,23 +60,12 @@ public class GUI extends JFrame {
         this.setVisible(true);
     }
 
-    public AnimationStrategy getAnimation() {
-        return this.animation;
+    public VisualizationView getVisualizationView() {
+        return this.visualizationView;
     }
 
     public StatisticView getStatisticView() {
         return this.statisticView;
-    }
-
-    /**
-     * Permet de changer la stratégie d'animation.
-     *
-     * @param a La nouvelle stratégie d'animation.
-     */
-    public void setAnimation(AnimationStrategy a) {
-        this.sortingArray.removeModelListener(this.animation);
-        this.animation = a;
-        this.refresh();
     }
 
     /**
@@ -133,7 +123,7 @@ public class GUI extends JFrame {
         sortPanel.setBackground(Color.BLACK);
         sortPanel.setLayout(new BorderLayout());
         sortPanel.add(this.statisticView, BorderLayout.NORTH);
-        sortPanel.add(this.animation, BorderLayout.CENTER);
+        sortPanel.add(this.visualizationView, BorderLayout.CENTER);
         this.add(sortPanel, BorderLayout.CENTER);
     }
     

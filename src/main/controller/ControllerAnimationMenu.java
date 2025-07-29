@@ -2,6 +2,7 @@ package main.controller;
 
 import main.model.*;
 import main.view.*;
+import main.view.animation.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -25,10 +26,10 @@ public class ControllerAnimationMenu implements ActionListener {
         this.sortingArray = sortingArray;
         this.gui = gui;
         this.sortFactories = new HashMap<>();
-        this.sortFactories.put("Vbars", () -> new VBarAnimationView(this.sortingArray));
-        this.sortFactories.put("Points", () -> new PointAnimationView(this.sortingArray));
-        this.sortFactories.put("Pyramid", () -> new PyramidAnimationView(this.sortingArray));
-        this.sortFactories.put("Lines", () -> new LineAnimationView(this.sortingArray));
+        this.sortFactories.put("Vbars", VBarAnimation::new);
+        this.sortFactories.put("Points", PointAnimation::new);
+        this.sortFactories.put("Pyramid", PyramidAnimation::new);
+        this.sortFactories.put("Lines", LineAnimation::new);
     }
 
     @Override
@@ -37,9 +38,9 @@ public class ControllerAnimationMenu implements ActionListener {
             String item = ((JMenuItem) e.getSource()).getText();
             Supplier<AnimationStrategy> factory = sortFactories.get(item);
             if(factory != null) {
-                this.gui.getAnimation().stopTimer();
+                this.gui.getVisualizationView().stopTimer();
                 this.gui.getStatisticView().stopTimer();
-                this.gui.setAnimation(factory.get());
+                this.gui.getVisualizationView().setAnimationStrategy(factory.get());
                 this.sortingArray.reload();
             } else {
                 throw new IllegalArgumentException("Unknown animation type: " + item);

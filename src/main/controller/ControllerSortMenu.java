@@ -50,7 +50,7 @@ public class ControllerSortMenu implements ActionListener {
             String item = ((JMenuItem) e.getSource()).getText();
             Supplier<SortingStrategy> factory = sortFactories.get(item);
             if(factory != null) {
-                this.gui.getAnimation().stopTimer();
+                this.gui.getVisualizationView().stopTimer();
                 this.gui.getStatisticView().stopTimer();
                 this.sortingArray.reload(factory.get(), item);
             } else {

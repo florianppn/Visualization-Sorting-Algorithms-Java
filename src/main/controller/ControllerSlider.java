@@ -24,7 +24,7 @@ public class ControllerSlider implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         if (e.getSource() instanceof JSlider) {
             int sleep = ((JSlider) e.getSource()).getValue();
-            this.gui.getAnimation().setTimer(sleep);
+            this.gui.getVisualizationView().setTimer(sleep);
             this.gui.getStatisticView().setTimer(sleep);
         }
     }

@@ -27,7 +27,7 @@ public class ControllerSpinner implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         if (e.getSource() instanceof JSpinner) {
             float entropy = ((Double) ((JSpinner) e.getSource()).getValue()).floatValue();
-            this.gui.getAnimation().stopTimer();
+            this.gui.getVisualizationView().stopTimer();
             this.gui.getStatisticView().stopTimer();
             this.sortingArray.setGeneratorData(entropy);
             this.sortingArray.reload();

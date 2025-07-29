@@ -36,13 +36,13 @@ public class ControllerButtons implements ActionListener {
             String command = e.getActionCommand();
             switch(command) {
                 case "SORT":
-                    this.gui.getAnimation().stopTimer();
+                    this.gui.getVisualizationView().stopTimer();
                     this.gui.getStatisticView().stopTimer();
                     this.sortingArray.reloadWithoutFireChange();
                     this.run();
                     break;
                 case "RELOAD":
-                    this.gui.getAnimation().stopTimer();
+                    this.gui.getVisualizationView().stopTimer();
                     this.gui.getStatisticView().stopTimer();
                     this.sortingArray.reload();
                     break;
