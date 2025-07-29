@@ -25,9 +25,9 @@ public class Panel implements ComponentUI {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setActivated(boolean enabled) {
         for(ComponentUI c : this.components) {
-            c.setEnabled(enabled);
+            c.setActivated(enabled);
         }
     }   
 

@@ -8,6 +8,6 @@ package main.view.component;
  */
 public interface ComponentUI {
 
-    void setEnabled(boolean enabled);
+    void setActivated(boolean enabled);
 
 }

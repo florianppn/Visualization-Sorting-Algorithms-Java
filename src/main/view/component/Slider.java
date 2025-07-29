@@ -11,7 +11,7 @@ import java.util.*;
  * @author Florian Pépin
  * @version 1.0
  */
-public class Slider extends JSlider {
+public class Slider extends JSlider implements ComponentUI {
 
     private ChangeListener listener;
     private int min;
@@ -37,6 +37,11 @@ public class Slider extends JSlider {
         this.setValue(this.initialValue);
         this.setBackground(Color.WHITE);
         this.addChangeListener(this.listener);
+    }
+
+    @Override
+    public void setActivated(boolean enabled) {
+        throw new UnsupportedOperationException("This component is not editable.");
     }
 
 }

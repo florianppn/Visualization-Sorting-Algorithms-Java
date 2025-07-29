@@ -39,7 +39,7 @@ public class Button extends JButton implements ComponentUI {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setActivated(boolean enabled) {
         super.setEnabled(enabled);
     }
 

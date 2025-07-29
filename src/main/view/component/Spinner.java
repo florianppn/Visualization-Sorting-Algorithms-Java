@@ -24,7 +24,7 @@ public class Spinner extends JSpinner implements ComponentUI {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setActivated(boolean enabled) {
         super.setEnabled(enabled);
         this.getEditor().setEnabled(enabled);
         this.getEditor().getComponent(0).setEnabled(enabled);

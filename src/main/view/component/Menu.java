@@ -46,7 +46,7 @@ public class Menu extends JMenuBar implements ComponentUI {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setActivated(boolean enabled) {
         super.setEnabled(enabled);
         for (Component component : this.getComponents()) {
             component.setEnabled(enabled);
