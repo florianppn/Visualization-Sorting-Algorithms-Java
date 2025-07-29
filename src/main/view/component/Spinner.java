@@ -1,10 +1,10 @@
-package main.view;
+package main.view.component;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 
-public class Spinner extends JSpinner {
+public class Spinner extends JSpinner implements ComponentUI {
 
     private float min;
     private float max;
@@ -21,6 +21,13 @@ public class Spinner extends JSpinner {
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(50, 30));
         this.addChangeListener(this.listener);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        this.getEditor().setEnabled(enabled);
+        this.getEditor().getComponent(0).setEnabled(enabled);
     }
 
 }

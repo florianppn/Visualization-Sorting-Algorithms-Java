@@ -1,4 +1,4 @@
-package main.view;
+package main.view.component;
 
 import main.controller.MouseOverEvent;
 
@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author Florian Pépin
  * @version 1.0
  */
-public class Button extends JButton {
+public class Button extends JButton implements ComponentUI {
 
     public final static String ICON_PATH = "/main/resources/icon/";
     private String text;
@@ -36,6 +36,11 @@ public class Button extends JButton {
         this.addActionListener(this.listener);
         this.addMouseListener(new MouseOverEvent(this));
         this.setBackground(Color.WHITE);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
     }
 
 }

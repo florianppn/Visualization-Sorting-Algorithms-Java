@@ -1,4 +1,4 @@
-package main.view;
+package main.view.component;
 
 import javax.swing.*;
 import javax.swing.event.*;

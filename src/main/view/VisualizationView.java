@@ -124,7 +124,6 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.dataBuffer.offer(this.sortingArray.getGeneratorData().clone());
         this.current1Buffer.offer(this.sortingArray.getCurrent1());
         this.current2Buffer.offer(this.sortingArray.getCurrent2());
-        if (eventType.equals("run")) this.run();
         if (eventType.equals("reload")) this.repaint();
     }
 

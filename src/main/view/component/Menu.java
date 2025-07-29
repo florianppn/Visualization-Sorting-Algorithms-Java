@@ -1,4 +1,4 @@
-package main.view;
+package main.view.component;
 
 import main.controller.MouseOverEvent;
 
@@ -12,7 +12,7 @@ import java.awt.event.*;
  * @author Florian Pépin
  * @version 1.0
  */
-public class Menu extends JMenuBar {
+public class Menu extends JMenuBar implements ComponentUI {
 
     private ActionListener listener;
     private String[] items;
@@ -43,6 +43,14 @@ public class Menu extends JMenuBar {
             sortMenu.add(item);
         }
         return sortMenu;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        for (Component component : this.getComponents()) {
+            component.setEnabled(enabled);
+        }
     }
 
 }

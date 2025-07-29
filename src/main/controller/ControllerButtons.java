@@ -39,6 +39,7 @@ public class ControllerButtons implements ActionListener {
                     this.gui.getVisualizationView().stopTimer();
                     this.gui.getStatisticView().stopTimer();
                     this.sortingArray.reloadWithoutFireChange();
+                    this.gui.getVisualizationView().run();
                     this.run();
                     break;
                 case "RELOAD":

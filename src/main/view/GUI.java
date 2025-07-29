@@ -3,6 +3,11 @@ package main.view;
 import main.model.*;
 import main.controller.*;
 import main.view.animation.*;
+import main.view.component.Panel;
+import main.view.component.Menu;
+import main.view.component.Button;
+import main.view.component.Slider;
+import main.view.component.Spinner;
 
 import java.awt.*;
 import javax.swing.*;
@@ -18,6 +23,7 @@ public class GUI extends JFrame {
     private SortingArray sortingArray;
     private VisualizationView visualizationView;
     private StatisticView statisticView;
+    private Panel panel;
     private ControllerButtons controllerButtons;
     private ControllerSortMenu controllerSortMenu;
     private ControllerAnimationMenu controllerAnimationMenu;
@@ -41,17 +47,23 @@ public class GUI extends JFrame {
         this.sortingArray = sortingArray;
         this.visualizationView = new VisualizationView(this.sortingArray, new VBarAnimation());
         this.statisticView = new StatisticView(this.sortingArray);
+        this.panel = new Panel();
         this.controllerButtons = new ControllerButtons(this.sortingArray, this);
         this.controllerSortMenu = new ControllerSortMenu(this.sortingArray, this);
         this.controllerAnimationMenu = new ControllerAnimationMenu(this.sortingArray, this);
         this.controllerSlider = new ControllerSlider(this);
         this.controllerSpinner = new ControllerSpinner(this.sortingArray, this);
         this.animationMenuBar = new Menu(this.controllerAnimationMenu, this.animations, "Animations");
+        this.panel.addComponent(this.animationMenuBar);
         this.sortMenuBar = new Menu(this.controllerSortMenu, this.sorts, "Sorts");
+        this.panel.addComponent(this.sortMenuBar);
         this.reloadButton = new Button(this.controllerButtons, "RELOAD", "reload.png");
+        this.panel.addComponent(this.reloadButton);
         this.sortButton = new Button(this.controllerButtons, "SORT", "run.png");
+        this.panel.addComponent(this.sortButton);
         this.slider = new Slider(this.controllerSlider, 1, 11, 6);
         this.spinner = new Spinner(this.controllerSpinner, 0f, 1f, 1f);
+        this.panel.addComponent(this.spinner);
 
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

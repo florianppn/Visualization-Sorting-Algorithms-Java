@@ -148,7 +148,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.sortingStrategy.sortingAlgorithm(this);
         long endTime = System.nanoTime();
         this.delay = (endTime - startTime) / 1000000.0;
-        this.fireChange("run");
         this.setCurrent1(-1);
         this.setCurrent2(-1);
         this.fireChange("end");
