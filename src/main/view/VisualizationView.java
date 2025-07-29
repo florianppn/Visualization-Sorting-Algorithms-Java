@@ -19,10 +19,7 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     private SortingArray sortingArray;
     private AnimationStrategy animationStrategy;
-    private int time = 6;
-    private int multiplier = 6;
     private int count;
-    private Timer timer;
     private ConcurrentLinkedQueue<String> eventTypeBuffer;
     private ConcurrentLinkedQueue<int[]> dataBuffer;
     private ConcurrentLinkedQueue<Integer> current1Buffer;
@@ -41,34 +38,19 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.setBackground(Color.BLACK);
     }
 
+    public boolean isEventTypeBufferEmpty() {
+        return this.eventTypeBuffer.isEmpty();
+    }
+
     public void setAnimationStrategy(AnimationStrategy animationStrategy) {
         this.animationStrategy = animationStrategy;
     }
 
-    /**
-     * Stoppe le timer de l'animation.
-     */
-    public void stopTimer() {
-        if (this.timer != null) {
-            this.timer.stop();
-            this.eventTypeBuffer.clear();
-            this.dataBuffer.clear();
-            this.current1Buffer.clear();
-            this.current2Buffer.clear();
-            this.count = 0;
-        }
-    }
-
-    public void setTimer(int s) {
-        if (this.timer != null) {
-            if (this.time < 0) {
-                throw new IllegalArgumentException("Illegal value cannot be negative.");
-            }
-            this.time = s;
-            this.timer.stop();
-            this.timer.setDelay(this.time * this.multiplier);
-            this.timer.start();
-        }
+    public void clean() {
+        this.eventTypeBuffer.clear();
+        this.dataBuffer.clear();
+        this.current1Buffer.clear();
+        this.current2Buffer.clear();
     }
 
     @Override
@@ -101,21 +83,14 @@ public class VisualizationView extends JPanel implements ModelListener {
      * Démarre l'animation.
      */
     public void run() {
-        this.timer = new Timer(this.time * this.multiplier, e -> {
-            String eventType = this.eventTypeBuffer.peek();
-            if (eventType != null) {
-                if (eventType.equals("end") && this.count < this.sortingArray.getGeneratorData().length) {
-                    this.eventTypeBuffer.offer("end");
-                    this.count++;
-                }
-                SwingUtilities.invokeLater(this::repaint);
-            } else {
-                this.count = 0;
-                ((Timer) e.getSource()).stop();
+        String eventType = this.eventTypeBuffer.peek();
+        if (eventType != null) {
+            if (eventType.equals("end") && this.count < this.sortingArray.getGeneratorData().length) {
+                this.eventTypeBuffer.offer("end");
+                this.count++;
             }
-        });
-        this.timer.setRepeats(true);
-        this.timer.start();
+            SwingUtilities.invokeLater(this::repaint);
+        }
     }
 
     @Override

@@ -15,11 +15,8 @@ import javax.swing.*;
  */
 public class StatisticView extends JPanel implements ModelListener {
 
-    private int time = 6;
-    private int multiplier = 6;
     private SortingArray sortingArray;
     private JLabel stats;
-    private Timer timer;
     private ConcurrentLinkedQueue<String> eventTypeBuffer;
     private ConcurrentLinkedQueue<Integer> comparisonsBuffer;
     private ConcurrentLinkedQueue<Integer> arrayAccessBuffer;
@@ -41,52 +38,31 @@ public class StatisticView extends JPanel implements ModelListener {
     /**
      * Stoppe le timer de l'animation.
      */
-    public void stopTimer() {
-        if (this.timer != null) {
-            this.timer.stop();
-            this.eventTypeBuffer.clear();
-            this.comparisonsBuffer.clear();
-            this.arrayAccessBuffer.clear();
-            this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + 0 +
-                    " comparisons, " + 0 + " array accesses, " +
-                    0 + " ms real delay");
-        }
-    }
-
-    public void setTimer(int s) {
-        if (this.timer != null) {
-            if (this.time < 0) {
-                throw new IllegalArgumentException("illegal value cannot be negative.");
-            }
-            this.time = s;
-            this.timer.stop();
-            this.timer.setDelay(this.time * this.multiplier);
-            this.timer.start();
-        }
+    public void clean() {
+        this.eventTypeBuffer.clear();
+        this.comparisonsBuffer.clear();
+        this.arrayAccessBuffer.clear();
+        this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + 0 +
+                " comparisons, " + 0 + " array accesses, " +
+                0 + " ms real delay");
     }
 
     /**
      * Démarre l'animation.
      */
     public void run() {
-        this.timer = new Timer(this.time * this.multiplier, e -> {
-            String eventType = this.eventTypeBuffer.poll();
-            if (eventType != null ) {
-                if (eventType.equals("step")) {
-                    this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
-                            " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            0 + " ms real delay");
-                } else if (eventType.equals("end")) {
-                    this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
-                            " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                            this.sortingArray.getDelay() + " ms real delay");
-                }
-            } else {
-                ((Timer) e.getSource()).stop();
+        String eventType = this.eventTypeBuffer.poll();
+        if (eventType != null ) {
+            if (eventType.equals("step")) {
+                this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                        " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                        0 + " ms real delay");
+            } else if (eventType.equals("end")) {
+                this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                        " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                        this.sortingArray.getDelay() + " ms real delay");
             }
-        });
-        this.timer.setRepeats(true);
-        this.timer.start();
+        }
     }
 
     @Override
@@ -94,7 +70,6 @@ public class StatisticView extends JPanel implements ModelListener {
         this.eventTypeBuffer.add(eventType);
         this.comparisonsBuffer.add(this.sortingArray.getComparisons());
         this.arrayAccessBuffer.add(this.sortingArray.getArrayAccess());
-        if (eventType.equals("run")) this.run();
     }
 
 }
