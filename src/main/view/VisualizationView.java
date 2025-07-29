@@ -19,14 +19,14 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     private SortingArray sortingArray;
     private AnimationStrategy animationStrategy;
-    protected int time = 6;
-    protected int multiplier = 6;
-    protected int count;
-    protected Timer timer;
-    protected ConcurrentLinkedQueue<String> eventTypeBuffer;
-    protected ConcurrentLinkedQueue<int[]> dataBuffer;
-    protected ConcurrentLinkedQueue<Integer> current1Buffer;
-    protected ConcurrentLinkedQueue<Integer> current2Buffer;
+    private int time = 6;
+    private int multiplier = 6;
+    private int count;
+    private Timer timer;
+    private ConcurrentLinkedQueue<String> eventTypeBuffer;
+    private ConcurrentLinkedQueue<int[]> dataBuffer;
+    private ConcurrentLinkedQueue<Integer> current1Buffer;
+    private ConcurrentLinkedQueue<Integer> current2Buffer;
 
     public VisualizationView(SortingArray sortingArray, AnimationStrategy animationStrategy) {
         super();
@@ -39,10 +39,6 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.current1Buffer = new ConcurrentLinkedQueue<>();
         this.current2Buffer = new ConcurrentLinkedQueue<>();
         this.setBackground(Color.BLACK);
-    }
-
-    public AnimationStrategy getAnimationStrategy() {
-        return animationStrategy;
     }
 
     public void setAnimationStrategy(AnimationStrategy animationStrategy) {
