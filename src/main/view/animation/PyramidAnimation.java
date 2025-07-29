@@ -3,7 +3,7 @@ package main.view.animation;
 import java.awt.*;
 
 /**
- * Représente la vue de l'animation de tri en forme de pyramide.
+ * Représente l'animation de tri en forme de pyramide.
  *
  * @author Florian Pépin
  * @version 1.0

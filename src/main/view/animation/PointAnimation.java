@@ -3,7 +3,7 @@ package main.view.animation;
 import java.awt.*;
 
 /**
- * Représente la vue de l'animation de tri par point.
+ * Représente l'animation de tri par point.
  *
  * @author Florian Pépin
  * @version 1.0

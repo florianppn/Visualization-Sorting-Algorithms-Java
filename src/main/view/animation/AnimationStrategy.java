@@ -12,8 +12,6 @@ public interface AnimationStrategy {
 
     /**
      * Dessine les éléments du tri.
-     * Les éléments en cours de tri sont en vert et rouge.
-     * Les éléments non triés sont en blanc.
      *
      * @param g l'objet Graphics.
      */
@@ -21,8 +19,6 @@ public interface AnimationStrategy {
 
     /**
      * Dessine les éléments du tri à la fin.
-     * Les éléments triés sont en vert.
-     * Les éléments non triés sont en blanc.
      *
      * @param g l'objet Graphics.
      */
