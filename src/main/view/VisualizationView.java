@@ -19,7 +19,6 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     private SortingArray sortingArray;
     private AnimationStrategy animationStrategy;
-    private int count;
     private ConcurrentLinkedQueue<String> eventTypeBuffer;
     private ConcurrentLinkedQueue<int[]> dataBuffer;
     private ConcurrentLinkedQueue<Integer> current1Buffer;
@@ -30,7 +29,6 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.sortingArray = sortingArray;
         this.sortingArray.addModelListener(this);
         this.animationStrategy = animationStrategy;
-        this.count = 0;
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.dataBuffer = new ConcurrentLinkedQueue<>();
         this.current1Buffer = new ConcurrentLinkedQueue<>();
@@ -69,8 +67,6 @@ public class VisualizationView extends JPanel implements ModelListener {
                 Integer current1 = this.current1Buffer.poll();
                 Integer current2 = this.current2Buffer.poll();
                 this.animationStrategy.drawSortStep(g, table, this.getWidth(), this.getHeight(), current1, current2);
-            } else if (eventType.equals("end")) {
-                this.animationStrategy.drawSortEnd(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), this.count);
             } else {
                 this.animationStrategy.drawSortStep(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), -1, -1);
             }
@@ -83,14 +79,7 @@ public class VisualizationView extends JPanel implements ModelListener {
      * Démarre l'animation.
      */
     public void run() {
-        String eventType = this.eventTypeBuffer.peek();
-        if (eventType != null) {
-            if (eventType.equals("end") && this.count < this.sortingArray.getGeneratorData().length) {
-                this.eventTypeBuffer.offer("end");
-                this.count++;
-            }
-            SwingUtilities.invokeLater(this::repaint);
-        }
+        SwingUtilities.invokeLater(this::repaint);
     }
 
     @Override

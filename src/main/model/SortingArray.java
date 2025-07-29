@@ -150,7 +150,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.delay = (endTime - startTime) / 1000000.0;
         this.setCurrent1(-1);
         this.setCurrent2(-1);
-        this.fireChange("end");
     }
 
     /**
