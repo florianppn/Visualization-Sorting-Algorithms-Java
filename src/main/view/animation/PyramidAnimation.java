@@ -29,18 +29,6 @@ public class PyramidAnimation implements AnimationStrategy {
     }
 
     @Override
-    public void drawSortEnd(Graphics g, int[] table, int width , int height, int count) {
-        for (int i=0; i < table.length; i++) {
-            if(count >= i) {
-                g.setColor(Color.GREEN);
-            } else {
-                g.setColor(Color.WHITE);
-            }
-            this.drawGeometricShape(g, table, width, height, i);
-        }
-    }
-
-    @Override
     public void drawGeometricShape(Graphics g, int[] table, int width , int height, int i) {
         int size = table.length;
         

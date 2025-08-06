@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 /**
- * Représente le contrôleur des boutons de tri et de rechargement.
+ * Représente le contrôleur du tri visuel.
  * 
  * @author Florian Pépin
  * @version 1.0
@@ -58,8 +58,8 @@ public class SortControlController implements ActionListener, ChangeListener {
                 this.gui.getVisualizationView().run();
                 this.gui.getStatisticView().run();
             } else {
-                this.panel.setActivated(true);
                 ((Timer) e.getSource()).stop();
+                this.panel.setActivated(true);
             }
         });
         this.timer.setRepeats(true);

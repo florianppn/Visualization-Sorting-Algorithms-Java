@@ -18,13 +18,6 @@ public interface AnimationStrategy {
     void drawSortStep(Graphics g, int[] table, int width , int height, int current1, int current2);
 
     /**
-     * Dessine les éléments du tri à la fin.
-     *
-     * @param g l'objet Graphics.
-     */
-    void drawSortEnd(Graphics g, int[] table, int width , int height, int count);
-
-    /**
      * Dessine une forme géométrique.
      *
      * @param g l'objet Graphics.

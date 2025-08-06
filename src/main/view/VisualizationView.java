@@ -19,20 +19,16 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     private SortingArray sortingArray;
     private AnimationStrategy animationStrategy;
-    private ConcurrentLinkedQueue<String> eventTypeBuffer;
-    private ConcurrentLinkedQueue<int[]> dataBuffer;
-    private ConcurrentLinkedQueue<Integer> current1Buffer;
-    private ConcurrentLinkedQueue<Integer> current2Buffer;
+    private ConcurrentLinkedQueue<String> eventTypeBuffer = new ConcurrentLinkedQueue<>();;
+    private ConcurrentLinkedQueue<int[]> dataBuffer = new ConcurrentLinkedQueue<>();;
+    private ConcurrentLinkedQueue<Integer> current1Buffer = new ConcurrentLinkedQueue<>();;
+    private ConcurrentLinkedQueue<Integer> current2Buffer = new ConcurrentLinkedQueue<>();;
 
     public VisualizationView(SortingArray sortingArray, AnimationStrategy animationStrategy) {
         super();
         this.sortingArray = sortingArray;
         this.sortingArray.addModelListener(this);
         this.animationStrategy = animationStrategy;
-        this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
-        this.dataBuffer = new ConcurrentLinkedQueue<>();
-        this.current1Buffer = new ConcurrentLinkedQueue<>();
-        this.current2Buffer = new ConcurrentLinkedQueue<>();
         this.setBackground(Color.BLACK);
     }
 
