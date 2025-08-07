@@ -19,10 +19,10 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     private SortingArray sortingArray;
     private AnimationStrategy animationStrategy;
-    private ConcurrentLinkedQueue<String> eventTypeBuffer = new ConcurrentLinkedQueue<>();;
-    private ConcurrentLinkedQueue<int[]> dataBuffer = new ConcurrentLinkedQueue<>();;
-    private ConcurrentLinkedQueue<Integer> current1Buffer = new ConcurrentLinkedQueue<>();;
-    private ConcurrentLinkedQueue<Integer> current2Buffer = new ConcurrentLinkedQueue<>();;
+    private ConcurrentLinkedQueue<String> eventTypeBuffer = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<int[]> dataBuffer = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Integer> current1Buffer = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Integer> current2Buffer = new ConcurrentLinkedQueue<>();
 
     public VisualizationView(SortingArray sortingArray, AnimationStrategy animationStrategy) {
         super();
@@ -50,36 +50,28 @@ public class VisualizationView extends JPanel implements ModelListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        String eventType = this.eventTypeBuffer.poll();
-        if (eventType != null) {
-            if (eventType.equals("step")) {
-                int[] table = this.dataBuffer.poll();
-                Integer current1 = this.current1Buffer.poll();
-                Integer current2 = this.current2Buffer.poll();
-                this.animationStrategy.drawSortStep(g, table, this.getWidth(), this.getHeight(), current1, current2);
-            } else {
-                this.animationStrategy.drawSortStep(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), -1, -1);
-            }
-        } else {
-            this.animationStrategy.drawSortStep(g, this.sortingArray.getGeneratorData(), this.getWidth(), this.getHeight(), -1, -1);
-        }
+        int[] table = this.dataBuffer.isEmpty() ? this.sortingArray.getGeneratorData() : this.dataBuffer.poll();
+        int current1 = this.current1Buffer.isEmpty() ? -1 : this.current1Buffer.poll();
+        int current2 = this.current2Buffer.isEmpty() ? -1 : this.current2Buffer.poll();
+        this.animationStrategy.drawSortStep(g, table, this.getWidth(), this.getHeight(), current1, current2);
     }
 
     /**
      * Démarre l'animation.
      */
     public void run() {
-        SwingUtilities.invokeLater(this::repaint);
+        String eventType = this.eventTypeBuffer.poll();
+        assert eventType != null;
+        if (eventType.equals("step")) {
+            SwingUtilities.invokeLater(this::repaint);
+        }
     }
 
     @Override
     public void updatedModel(Object source, String eventType) {
         if (eventType.equals("reload")) {
             this.repaint();
-            this.eventTypeBuffer.clear();
-            this.dataBuffer.clear();
-            this.current1Buffer.clear();
-            this.current2Buffer.clear();
+            this.clean();
         } else {
             this.eventTypeBuffer.offer(eventType);
             this.dataBuffer.offer(this.sortingArray.getGeneratorData().clone());
