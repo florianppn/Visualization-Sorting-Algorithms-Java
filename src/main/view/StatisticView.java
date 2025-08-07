@@ -53,15 +53,9 @@ public class StatisticView extends JPanel implements ModelListener {
     public void run() {
         String eventType = this.eventTypeBuffer.poll();
         if (eventType != null ) {
-            if (eventType.equals("step")) {
-                this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
-                        " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                        0 + " ms real delay");
-            } else if (eventType.equals("end")) {
-                this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
-                        " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                        this.sortingArray.getDelay() + " ms real delay");
-            }
+            this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                    " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                    this.sortingArray.getDelay() + " ms real delay");
         }
     }
 

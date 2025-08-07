@@ -52,12 +52,6 @@ public class VisualizationView extends JPanel implements ModelListener {
         super.paintComponent(g);
         String eventType = this.eventTypeBuffer.poll();
         if (eventType != null) {
-            if (eventType.equals("reload")) {
-                this.eventTypeBuffer.clear();
-                this.dataBuffer.clear();
-                this.current1Buffer.clear();
-                this.current2Buffer.clear();
-            }
             if (eventType.equals("step")) {
                 int[] table = this.dataBuffer.poll();
                 Integer current1 = this.current1Buffer.poll();
@@ -80,11 +74,18 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     @Override
     public void updatedModel(Object source, String eventType) {
-        this.eventTypeBuffer.offer(eventType);
-        this.dataBuffer.offer(this.sortingArray.getGeneratorData().clone());
-        this.current1Buffer.offer(this.sortingArray.getCurrent1());
-        this.current2Buffer.offer(this.sortingArray.getCurrent2());
-        if (eventType.equals("reload")) this.repaint();
+        if (eventType.equals("reload")) {
+            this.repaint();
+            this.eventTypeBuffer.clear();
+            this.dataBuffer.clear();
+            this.current1Buffer.clear();
+            this.current2Buffer.clear();
+        } else {
+            this.eventTypeBuffer.offer(eventType);
+            this.dataBuffer.offer(this.sortingArray.getGeneratorData().clone());
+            this.current1Buffer.offer(this.sortingArray.getCurrent1());
+            this.current2Buffer.offer(this.sortingArray.getCurrent2());
+        }
     }
 
 }
