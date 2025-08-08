@@ -60,11 +60,8 @@ public class VisualizationView extends JPanel implements ModelListener {
      * Démarre l'animation.
      */
     public void run() {
-        String eventType = this.eventTypeBuffer.poll();
-        assert eventType != null;
-        if (eventType.equals("step")) {
-            SwingUtilities.invokeLater(this::repaint);
-        }
+        this.eventTypeBuffer.poll();
+        SwingUtilities.invokeLater(this::repaint);
     }
 
     @Override

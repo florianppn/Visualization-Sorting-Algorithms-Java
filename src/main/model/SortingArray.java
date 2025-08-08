@@ -17,7 +17,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
     private SortingStrategy sortingStrategy;
     private GeneratorWithEntropy generatorWithEntropy;
     private int[] generatorData;
-    private int[] originalData;
     private int current1;
     private int current2;
     private int comparisons;
@@ -31,7 +30,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.sortingStrategy = sortingStrategy;
         this.generatorWithEntropy = generatorWithEntropy;
         this.generatorData = generatorWithEntropy.sortWithEntropy(true);
-        this.originalData = Arrays.copyOf(this.generatorData, this.generatorData.length);
         this.comparisons = 0;
         this.arrayAccess = 0;
         this.current1 = -1;
@@ -96,7 +94,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
     public void setGeneratorData(float n) {
         this.generatorWithEntropy.setEntropy(n);
         this.generatorData = this.generatorWithEntropy.sortWithEntropy(true);
-        this.originalData = Arrays.copyOf(this.generatorData, this.generatorData.length);
     }
 
     public void setCurrent1(int current1) {
@@ -157,7 +154,7 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
      * Recharge la liste avec les données originales.
      */
     public void reload() {
-        this.generatorData = Arrays.copyOf(this.originalData, this.originalData.length);
+        this.generatorData = generatorWithEntropy.sortWithEntropy(true);
         this.delay = 0;
         this.comparisons = 0;
         this.arrayAccess = 0;
@@ -169,7 +166,7 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
      * Utile pour réinitialiser la liste sans notifier les observateurs.
      */
     public void reloadWithoutFireChange() {
-        this.generatorData = Arrays.copyOf(this.originalData, this.originalData.length);
+        this.generatorData = generatorWithEntropy.sortWithEntropy(true);
         this.delay = 0;
         this.comparisons = 0;
         this.arrayAccess = 0;
