@@ -50,9 +50,9 @@ public class VisualizationView extends JPanel implements ModelListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int[] table = this.dataBuffer.isEmpty() ? this.sortingArray.getGeneratorData() : this.dataBuffer.poll();
-        int current1 = this.current1Buffer.isEmpty() ? -1 : this.current1Buffer.poll();
-        int current2 = this.current2Buffer.isEmpty() ? -1 : this.current2Buffer.poll();
+        int[] table = this.dataBuffer.isEmpty() ? this.sortingArray.getGeneratorData() : this.dataBuffer.peek();
+        int current1 = this.current1Buffer.isEmpty() ? -1 : this.current1Buffer.peek();
+        int current2 = this.current2Buffer.isEmpty() ? -1 : this.current2Buffer.peek();
         this.animationStrategy.drawSortStep(g, table, this.getWidth(), this.getHeight(), current1, current2);
     }
 
@@ -61,7 +61,12 @@ public class VisualizationView extends JPanel implements ModelListener {
      */
     public void run() {
         this.eventTypeBuffer.poll();
-        SwingUtilities.invokeLater(this::repaint);
+        SwingUtilities.invokeLater(() -> {
+            this.repaint();
+            this.dataBuffer.poll();
+            this.current1Buffer.poll();
+            this.current2Buffer.poll();
+        });
     }
 
     @Override
