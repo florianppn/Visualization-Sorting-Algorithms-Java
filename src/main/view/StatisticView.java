@@ -36,7 +36,8 @@ public class StatisticView extends JPanel implements ModelListener {
     }
 
     /**
-     * Stoppe le timer de l'animation.
+     * Réinitialise les statistiques.
+     * Cette méthode vide les buffers et remet à zéro les statistiques affichées.
      */
     public void clean() {
         this.eventTypeBuffer.clear();

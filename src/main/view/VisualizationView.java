@@ -41,6 +41,9 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.repaint();
     }
 
+    /**
+     * Nettoie les buffers et redessine la vue.
+     */
     public void clean() {
         this.eventTypeBuffer.clear();
         this.dataBuffer.clear();
