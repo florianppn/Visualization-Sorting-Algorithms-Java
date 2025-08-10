@@ -11,6 +11,11 @@ import main.model.*;
 public class MergeSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Merge";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         this.mergeSort(sortingArray, 0, sortingArray.getSize() - 1);
     }

@@ -16,6 +16,11 @@ public class QuickSort implements SortingStrategy {
     private static final int INSERTION_SORT_THRESHOLD = 10;
 
     @Override
+    public String getSortName() {
+        return "Quick";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         this.iterativeQuickSort(sortingArray, 0, sortingArray.getSize() - 1);
     }

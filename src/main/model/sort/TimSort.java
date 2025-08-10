@@ -15,6 +15,11 @@ public class TimSort implements SortingStrategy {
     private static final int RUN = 32;
 
     @Override
+    public String getSortName() {
+        return "Tim";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         for (int i = 0; i < n; i += RUN) {

@@ -11,6 +11,11 @@ import main.model.*;
 public class CocktailShakerSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "CocktailShaker";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         boolean echange = true;

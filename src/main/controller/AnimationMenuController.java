@@ -37,10 +37,9 @@ public class AnimationMenuController implements ActionListener {
         if (e.getSource() instanceof JMenuItem) {
             String item = ((JMenuItem) e.getSource()).getText();
             Supplier<AnimationStrategy> factory = sortFactories.get(item);
-            if(factory != null) {
+            try {
                 this.gui.getVisualizationView().setAnimationStrategy(factory.get());
-                this.sortingArray.reload();
-            } else {
+            } catch (NullPointerException ex) {
                 throw new IllegalArgumentException("Unknown animation type: " + item);
             }
         }

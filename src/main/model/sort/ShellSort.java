@@ -11,6 +11,11 @@ import main.model.*;
 public class ShellSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Shell";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         for (int gap = n / 2; gap > 0; gap /= 2) {

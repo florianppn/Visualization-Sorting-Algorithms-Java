@@ -38,6 +38,7 @@ public class VisualizationView extends JPanel implements ModelListener {
 
     public void setAnimationStrategy(AnimationStrategy animationStrategy) {
         this.animationStrategy = animationStrategy;
+        this.repaint();
     }
 
     public void clean() {
@@ -45,6 +46,7 @@ public class VisualizationView extends JPanel implements ModelListener {
         this.dataBuffer.clear();
         this.current1Buffer.clear();
         this.current2Buffer.clear();
+        this.repaint();
     }
 
     @Override
@@ -72,7 +74,6 @@ public class VisualizationView extends JPanel implements ModelListener {
     @Override
     public void updatedModel(Object source, String eventType) {
         if (eventType.equals("reload")) {
-            this.repaint();
             this.clean();
         } else {
             this.eventTypeBuffer.offer(eventType);

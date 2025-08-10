@@ -11,6 +11,11 @@ import main.model.*;
 public class InsertionSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Insertion";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         for (int i = 1; i < n; i++) {

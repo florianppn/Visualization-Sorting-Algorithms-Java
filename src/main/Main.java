@@ -38,7 +38,7 @@ public class Main {
      */
     public static void main(String[] args) {
         GeneratorWithEntropy rgs = new GeneratorWithEntropy(ENTROPY, SIZE);
-        SortingArray sortingArray = new SortingArray(new QuickSort(), "Quick", rgs);
+        SortingArray sortingArray = new SortingArray(new QuickSort(), rgs);
         GUI g = new GUI(sortingArray);
     }
     

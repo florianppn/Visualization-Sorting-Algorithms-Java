@@ -11,6 +11,11 @@ import main.model.*;
 public class RadixSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Radix";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         int max = this.getMax(sortingArray);

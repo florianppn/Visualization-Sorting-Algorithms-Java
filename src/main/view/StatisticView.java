@@ -28,7 +28,7 @@ public class StatisticView extends JPanel implements ModelListener {
         this.eventTypeBuffer = new ConcurrentLinkedQueue<>();
         this.comparisonsBuffer = new ConcurrentLinkedQueue<>();
         this.arrayAccessBuffer = new ConcurrentLinkedQueue<>();
-        this.stats = new JLabel(this.sortingArray.getSortName() + " Sort" + " - " + this.sortingArray.getComparisons() + " comparisons, " +
+        this.stats = new JLabel(this.sortingArray.getSortingStrategy().getSortName() + " Sort" + " - " + this.sortingArray.getComparisons() + " comparisons, " +
                 this.sortingArray.getArrayAccess() + " array accesses, " + this.sortingArray.getDelay() + " ms real delay");
         this.stats.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
@@ -42,7 +42,7 @@ public class StatisticView extends JPanel implements ModelListener {
         this.eventTypeBuffer.clear();
         this.comparisonsBuffer.clear();
         this.arrayAccessBuffer.clear();
-        this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + 0 +
+        this.stats.setText(this.sortingArray.getSortingStrategy().getSortName() + " Sort" + " - " + 0 +
                 " comparisons, " + 0 + " array accesses, " +
                 0 + " ms real delay");
     }
@@ -53,7 +53,7 @@ public class StatisticView extends JPanel implements ModelListener {
     public void run() {
         String eventType = this.eventTypeBuffer.poll();
         if (eventType != null ) {
-            this.stats.setText(this.sortingArray.getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+            this.stats.setText(this.sortingArray.getSortingStrategy().getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
                     " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
                     this.sortingArray.getDelay() + " ms real delay");
         }

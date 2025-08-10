@@ -22,10 +22,9 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
     private int comparisons;
     private int arrayAccess;
     private double delay;
-    private String sortName;
     private int size;
 
-    public SortingArray(SortingStrategy sortingStrategy, String sortName, GeneratorWithEntropy generatorWithEntropy) {
+    public SortingArray(SortingStrategy sortingStrategy, GeneratorWithEntropy generatorWithEntropy) {
         super();
         this.sortingStrategy = sortingStrategy;
         this.generatorWithEntropy = generatorWithEntropy;
@@ -35,8 +34,11 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.current1 = -1;
         this.current2 = -1;
         this.delay = 0;
-        this.sortName = sortName;
         this.size = generatorData.length;
+    }
+
+    public SortingStrategy getSortingStrategy() {
+        return this.sortingStrategy;
     }
 
     public int[] getGeneratorData() {
@@ -67,10 +69,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
 
     public int getArrayAccess() {
         return this.arrayAccess;
-    }
-
-    public String getSortName() {
-        return this.sortName;
     }
 
     public int getSize() {
@@ -148,6 +146,8 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.setCurrent1(-1);
         this.setCurrent2(-1);
         this.fireChange("step");
+        this.comparisons = 0;
+        this.arrayAccess = 0;
     }
 
     /**
@@ -159,29 +159,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.comparisons = 0;
         this.arrayAccess = 0;
         this.fireChange("reload");
-    }
-
-    /**
-     * Recharge la liste sans déclencher d'événement de changement.
-     * Utile pour réinitialiser la liste sans notifier les observateurs.
-     */
-    public void reloadWithoutFireChange() {
-        this.generatorData = generatorWithEntropy.sortWithEntropy(true);
-        this.delay = 0;
-        this.comparisons = 0;
-        this.arrayAccess = 0;
-    }
-
-    /**
-     * Recharge la liste avec une nouvelle stratégie de tri.
-     *
-     * @param sortingStrategy La nouvelle stratégie de tri.
-     * @param sortName Le nom de la nouvelle stratégie de tri.
-     */
-    public void reload(SortingStrategy sortingStrategy, String sortName) {
-        this.sortingStrategy = sortingStrategy;
-        this.sortName = sortName;
-        this.reload();
     }
 
 }

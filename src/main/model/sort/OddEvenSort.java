@@ -9,7 +9,12 @@ import main.model.*;
  * @version 1.0
  */
 public class OddEvenSort implements SortingStrategy {
-    
+
+    @Override
+    public String getSortName() {
+        return "OddEven";
+    }
+
     @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();

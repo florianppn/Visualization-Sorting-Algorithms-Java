@@ -11,6 +11,11 @@ import main.model.*;
 public class SelectionSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Selection";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         for (int i = 0; i < n - 1; i++) {

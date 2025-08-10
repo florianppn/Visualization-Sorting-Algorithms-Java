@@ -9,7 +9,12 @@ import main.model.*;
  * @version 1.0
  */
 public class BubbleSort implements SortingStrategy {
-    
+
+    @Override
+    public String getSortName() {
+        return "Bubble";
+    }
+
     @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();

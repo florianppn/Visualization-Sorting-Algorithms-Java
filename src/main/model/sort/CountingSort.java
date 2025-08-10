@@ -11,6 +11,11 @@ import main.model.*;
 public class CountingSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Counting";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         if (n == 0) return;

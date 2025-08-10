@@ -11,7 +11,14 @@ import main.model.*;
 public interface SortingStrategy {
 
     /**
-     * Méthode de tri.
+     * Retourne le nom du tri.
+     *
+     * @return Le nom du tri.
+     */
+    String getSortName();
+
+    /**
+     * Algorithme de tri.
      *
      * @param sortingArray Le tableau a trier.
      */

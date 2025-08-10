@@ -75,7 +75,6 @@ public class SortControlController implements ActionListener, ChangeListener {
             switch(command) {
                 case "SORT":
                     this.stopTimer();
-                    this.sortingArray.reloadWithoutFireChange();
                     this.panel.setActivated(false);
                     this.run();
                     break;

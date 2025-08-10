@@ -2,6 +2,7 @@ package main.controller;
 
 import main.model.*;
 import main.model.sort.*;
+import main.view.GUI;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -17,11 +18,13 @@ import java.util.function.Supplier;
 public class SortMenuController implements ActionListener {
 
     private SortingArray sortingArray;
+    private GUI gui;
     private Map<String, Supplier<SortingStrategy>> sortFactories;
 
-    public SortMenuController(SortingArray sortingArray) {
+    public SortMenuController(SortingArray sortingArray, GUI gui) {
         super();
         this.sortingArray = sortingArray;
+        this.gui = gui;
         this.sortFactories = new HashMap<>();
         this.sortFactories.put("Bubble", BubbleSort::new);
         this.sortFactories.put("Cocktail", CocktailShakerSort::new);
@@ -46,9 +49,10 @@ public class SortMenuController implements ActionListener {
         if (e.getSource() instanceof JMenuItem) {
             String item = ((JMenuItem) e.getSource()).getText();
             Supplier<SortingStrategy> factory = sortFactories.get(item);
-            if(factory != null) {
-                this.sortingArray.reload(factory.get(), item);
-            } else {
+            try {
+                this.sortingArray.setSortingStrategy(factory.get());
+                this.gui.getStatisticView().clean();
+            } catch (NullPointerException ex) {
                 throw new IllegalArgumentException("Unknown sorting algorithm: " + item);
             }
         }

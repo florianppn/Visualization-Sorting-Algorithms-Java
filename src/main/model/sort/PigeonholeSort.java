@@ -11,7 +11,12 @@ import java.util.*;
  * @version 1.0
  */
 public class PigeonholeSort implements SortingStrategy {
-    
+
+    @Override
+    public String getSortName() {
+        return "Pigeonhole";
+    }
+
     @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();

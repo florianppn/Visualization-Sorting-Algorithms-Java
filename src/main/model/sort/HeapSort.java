@@ -11,6 +11,11 @@ import main.model.*;
 public class HeapSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Heap";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         this.buildMaxHeap(sortingArray, n);

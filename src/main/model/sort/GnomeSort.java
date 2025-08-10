@@ -11,6 +11,11 @@ import main.model.*;
 public class GnomeSort implements SortingStrategy {
 
     @Override
+    public String getSortName() {
+        return "Gnome";
+    }
+
+    @Override
     public void sortingAlgorithm(SortingArray sortingArray) {
         int n = sortingArray.getSize();
         int pos = 0;

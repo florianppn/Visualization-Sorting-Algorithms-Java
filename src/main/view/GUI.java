@@ -48,7 +48,7 @@ public class GUI extends JFrame {
         this.statisticView = new StatisticView(this.sortingArray);
         this.panel = new Panel();
         this.sortControlController = new SortControlController(this.sortingArray, this, this.panel);
-        this.sortMenuController = new SortMenuController(this.sortingArray);
+        this.sortMenuController = new SortMenuController(this.sortingArray, this);
         this.animationMenuController = new AnimationMenuController(this.sortingArray, this);
         this.entropyController = new EntropyController(this.sortingArray);
         this.animationMenuBar = new Menu(this.animationMenuController, this.animations, "Animations");
