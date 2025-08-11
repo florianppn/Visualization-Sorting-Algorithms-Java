@@ -1,5 +1,5 @@
 /**
- * Ce package contient les différents générateurs de données non triées.
+ * Ce package contient le générateur de données non triées.
  * 
  * @author Florian Pépin, Tom David et Emilien Huron
  * @version 1.0

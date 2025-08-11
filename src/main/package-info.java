@@ -1,5 +1,5 @@
 /**
- * Ce package contient les classes qui gèrent la visualisation des algorithmes de tris de l'application.
+ * Ce package contient le code de l'application permettant de visualiser les algorithmes de tri.
  *
  * @author Tom David, Emilien Huron et Florian Pépin
  * @version 1.0

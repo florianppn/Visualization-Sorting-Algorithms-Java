@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.util.Objects;
 
 /**
- * Représente un bouton avec une icône et un texte.
+ * Représente un composant de type JButton personnalisé.
  *
  * @author Florian Pépin
  * @version 1.0

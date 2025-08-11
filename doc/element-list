@@ -5,3 +5,5 @@ main.model
 main.model.sort
 main.utils
 main.view
+main.view.animation
+main.view.component

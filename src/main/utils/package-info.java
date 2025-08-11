@@ -4,4 +4,4 @@
  * @author Florian Pépin.
  * @version 1.0
  */
-package gridarena.utils;
+package main.utils;

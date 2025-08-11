@@ -1,13 +1,13 @@
 package main.view.component;
 
-import main.controller.MouseOverEvent;
+import main.controller.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Reprénsete un menu déroulant.
+ * Reprénsete un composant de type JMenuBar personnalisé.
  *
  * @author Florian Pépin
  * @version 1.0

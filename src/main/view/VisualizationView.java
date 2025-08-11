@@ -1,6 +1,6 @@
 package main.view;
 
-import main.model.SortingArray;
+import main.model.*;
 import main.utils.*;
 import main.view.animation.*;
 

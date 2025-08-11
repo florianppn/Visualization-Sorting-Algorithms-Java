@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Représente un slider personnalisé.
+ * Représente un composant de type JSlider personnalisé.
  *
  * @author Florian Pépin
  * @version 1.0

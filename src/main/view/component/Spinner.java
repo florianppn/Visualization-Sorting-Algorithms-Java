@@ -4,6 +4,12 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 
+/**
+ * Représente un composant de type JSpinner personnalisé.
+ *
+ * @author Florian Pépin
+ * @version 1.0
+ */
 public class Spinner extends JSpinner implements ComponentUI {
 
     private float min;

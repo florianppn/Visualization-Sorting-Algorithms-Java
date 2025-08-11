@@ -1,5 +1,5 @@
 /**
- * Ce package contient les classes responsables de l'interaction avec l’interface graphique Swing.
+ * Ce package contient les différents contrôleurs de l'applications.
  *
  * @author Florian Pépin
  * @version 1.0

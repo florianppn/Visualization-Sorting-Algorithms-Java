@@ -1,10 +1,10 @@
 package main.view;
 
 import main.model.*;
-import main.utils.ModelListener;
+import main.utils.*;
 
 import java.awt.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.*;
 import javax.swing.*;
 
 /**
@@ -52,16 +52,15 @@ public class StatisticView extends JPanel implements ModelListener {
      * Démarre l'animation.
      */
     public void run() {
-        String eventType = this.eventTypeBuffer.poll();
-        if (eventType != null ) {
-            this.stats.setText(this.sortingArray.getSortingStrategy().getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
-                    " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
-                    this.sortingArray.getDelay() + " ms real delay");
-        }
+        this.eventTypeBuffer.poll();
+        this.stats.setText(this.sortingArray.getSortingStrategy().getSortName() + " Sort" + " - " + this.comparisonsBuffer.poll() +
+                " comparisons, " + this.arrayAccessBuffer.poll() + " array accesses, " +
+                this.sortingArray.getDelay() + " ms real delay");
     }
 
     @Override
     public void updatedModel(Object source, String eventType) {
+        if (eventType.equals("reload")) this.clean();
         this.eventTypeBuffer.add(eventType);
         this.comparisonsBuffer.add(this.sortingArray.getComparisons());
         this.arrayAccessBuffer.add(this.sortingArray.getArrayAccess());

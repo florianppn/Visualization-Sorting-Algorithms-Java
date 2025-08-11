@@ -3,7 +3,7 @@ package main.view.component;
 import java.util.*;
 
 /**
- * Représente un panel de plusieurs composants.
+ * Représente un panel contenant des composants.
  * 
  * @author Florian Pépin
  * @version 1.0
