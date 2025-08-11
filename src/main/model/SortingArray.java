@@ -50,6 +50,13 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         return this.generatorData[i];
     }
 
+    /**
+     * Compare deux entiers.
+     *
+     * @param i Le premier entier.
+     * @param j Le deuxième entier.
+     * @return Un entier négatif si i < j, zéro si i == j, un entier positif si i > j.
+     */
     public int compare(int i, int j) {
         this.comparisons++;
         return Integer.compare(i, j);
