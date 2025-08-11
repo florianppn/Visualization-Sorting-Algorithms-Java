@@ -24,7 +24,7 @@ public class CycleSort implements SortingStrategy {
             int pos = cycleStart;
 
             for (int i = cycleStart + 1; i < n; i++) {
-                if (sortingArray.getElement(i) < item) {
+                if (sortingArray.compare(item, sortingArray.getElement(i)) > 0) {
                     pos++;
                 }
             }
@@ -45,7 +45,7 @@ public class CycleSort implements SortingStrategy {
                 pos = cycleStart;
 
                 for (int i = cycleStart + 1; i < n; i++) {
-                    if (sortingArray.getElement(i) < item) {
+                    if (sortingArray.compare(item, sortingArray.getElement(i)) > 0) {
                         pos++;
                     }
                 }
@@ -54,7 +54,7 @@ public class CycleSort implements SortingStrategy {
                     pos++;
                 }
 
-                if (item != sortingArray.getElement(pos)) {
+                if (sortingArray.compare(item, sortingArray.getElement(pos)) != 0) {
                     int temp = sortingArray.getElement(pos);
                     sortingArray.set(pos, item);
                     item = temp;

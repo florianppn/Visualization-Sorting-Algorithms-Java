@@ -22,7 +22,7 @@ public class ShellSort implements SortingStrategy {
             for (int i = gap; i < n; i++) {
                 int temp = sortingArray.getElement(i);
                 int j = i;
-                while (j >= gap && sortingArray.getElement(j - gap) > temp) {
+                while (j >= gap && sortingArray.compare(sortingArray.getElement(j - gap), temp) > 0) {
                     sortingArray.set(j, sortingArray.getElement(j - gap));
                     j -= gap;
                 }

@@ -24,14 +24,14 @@ public class OddEvenSort implements SortingStrategy {
             sorted = true;
 
             for (int i = 1; i < n - 1; i += 2) {
-                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                if (sortingArray.compare(sortingArray.getElement(i), sortingArray.getElement(i + 1)) > 0) {
                     sortingArray.swap(i, i + 1);
                     sorted = false;
                 }
             }
 
             for (int i = 0; i < n - 1; i += 2) {
-                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                if (sortingArray.compare(sortingArray.getElement(i), sortingArray.getElement(i + 1)) > 0) {
                     sortingArray.swap(i, i + 1);
                     sorted = false;
                 }

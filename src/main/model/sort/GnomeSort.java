@@ -21,7 +21,7 @@ public class GnomeSort implements SortingStrategy {
         int pos = 0;
 
         while (pos < n) {
-            if (pos == 0 || sortingArray.getElement(pos) >= sortingArray.getElement(pos - 1)) {
+            if (pos == 0 || sortingArray.compare(sortingArray.getElement(pos - 1), sortingArray.getElement(pos)) <= 0) {
                 pos++;
             } else {
                 sortingArray.swap(pos, pos - 1);

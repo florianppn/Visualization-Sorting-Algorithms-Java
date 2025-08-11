@@ -25,7 +25,9 @@ public class CocktailShakerSort implements SortingStrategy {
         while (echange) {
             echange = false;
             for (int i = start; i < end; i++) {
-                if (sortingArray.getElement(i) > sortingArray.getElement(i + 1)) {
+                int elt1 = sortingArray.getElement(i);
+                int elt2 = sortingArray.getElement(i + 1);
+                if (sortingArray.compare(elt1, elt2) > 0) {
                     sortingArray.swap(i, i + 1);
                     echange = true;
                 }
@@ -36,7 +38,9 @@ public class CocktailShakerSort implements SortingStrategy {
             echange = false;
 
             for (int i = end; i > start; i--) {
-                if (sortingArray.getElement(i) < sortingArray.getElement(i - 1)) {
+                int elt1 = sortingArray.getElement(i);
+                int elt2 = sortingArray.getElement(i - 1);
+                if (sortingArray.compare(elt1, elt2) < 0) {
                     sortingArray.swap(i, i - 1);
                     echange = true;
                 }

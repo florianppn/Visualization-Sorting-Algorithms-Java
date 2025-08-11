@@ -46,7 +46,7 @@ public class TimSort implements SortingStrategy {
         for (int i = left + 1; i <= right; i++) {
             int temp = sortingArray.getElement(i);
             int j = i - 1;
-            while (j >= left && sortingArray.getElement(j) > temp) {
+            while (j >= left && sortingArray.compare(sortingArray.getElement(j), temp) > 0) {
                 sortingArray.set(j + 1, sortingArray.getElement(j));
                 j--;
             }
@@ -77,7 +77,7 @@ public class TimSort implements SortingStrategy {
         int i = 0, j = 0, k = left;
 
         while (i < len1 && j < len2) {
-            if (leftArr[i] <= rightArr[j]) {
+            if (sortingArray.compare(leftArr[i], rightArr[j]) <= 0) {
                 sortingArray.set(k, leftArr[i]);
                 i++;
             } else {

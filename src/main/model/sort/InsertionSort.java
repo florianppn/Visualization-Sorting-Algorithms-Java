@@ -21,7 +21,7 @@ public class InsertionSort implements SortingStrategy {
         for (int i = 1; i < n; i++) {
             int k = sortingArray.getElement(i);
             int j = i - 1;
-            while (j >= 0 && sortingArray.getElement(j) > k) {
+            while (j >= 0 && sortingArray.compare(sortingArray.getElement(j), k) > 0) {
                 sortingArray.set(j + 1, sortingArray.getElement(j)); 
                 j--;
             }

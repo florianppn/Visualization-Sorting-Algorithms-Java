@@ -51,10 +51,10 @@ public class HeapSort implements SortingStrategy {
         int right = 2 * i + 2;
 
         // Vérifier si le fils gauche existe et est plus grand que la racine
-        if (left < n && sortingArray.getElement(left) > sortingArray.getElement(largest)) largest = left;
+        if (left < n && sortingArray.compare(sortingArray.getElement(left), sortingArray.getElement(largest)) > 0) largest = left;
 
         // Vérifier si le fils droit existe et est plus grand que le plus grand élément actuel
-        if (right < n && sortingArray.getElement(right) > sortingArray.getElement(largest)) largest = right;
+        if (right < n && sortingArray.compare(sortingArray.getElement(right), sortingArray.getElement(largest)) > 0) largest = right;
 
         // Si le plus grand élément n'est pas la racine, on échange
         if (largest != i) {

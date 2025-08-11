@@ -63,7 +63,7 @@ public class MergeSort implements SortingStrategy {
         // Fusionner les deux sous-listes en triant les éléments
         int i = 0, j = 0, k = left;
         while (i < n1 && j < n2) {
-            if (leftArray[i] <= rightArray[j]) {
+            if (sortingArray.compare(leftArray[i], rightArray[j]) <= 0) {
                 sortingArray.set(k, leftArray[i]);
                 i++;
             } else {

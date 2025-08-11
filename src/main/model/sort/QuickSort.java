@@ -65,11 +65,11 @@ public class QuickSort implements SortingStrategy {
      */
     private int selectPivot(SortingArray sortingArray, int low, int high) {
         int mid = low + (high - low) / 2;
-        if (sortingArray.getElement(mid) < sortingArray.getElement(low))
+        if (sortingArray.compare(sortingArray.getElement(mid), sortingArray.getElement(low)) < 0)
             sortingArray.swap(low, mid);
-        if (sortingArray.getElement(high) < sortingArray.getElement(low))
+        if (sortingArray.compare(sortingArray.getElement(high), sortingArray.getElement(low)) < 0)
             sortingArray.swap(low, high);
-        if (sortingArray.getElement(mid) < sortingArray.getElement(high))
+        if (sortingArray.compare(sortingArray.getElement(mid), sortingArray.getElement(high)) < 0)
             sortingArray.swap(mid, high);
         return high;
     }
@@ -88,7 +88,7 @@ public class QuickSort implements SortingStrategy {
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            if (sortingArray.getElement(j) <= pivot) {
+            if (sortingArray.compare(sortingArray.getElement(j), pivot) <= 0) {
                 i++;
                 sortingArray.swap(i, j);
             }
@@ -109,7 +109,7 @@ public class QuickSort implements SortingStrategy {
         for (int i = low + 1; i <= high; i++) {
             int key = sortingArray.getElement(i);
             int j = i - 1;
-            while (j >= low && sortingArray.getElement(j) > key) {
+            while (j >= low && sortingArray.compare(sortingArray.getElement(j), key) > 0) {
                 sortingArray.swap(j + 1, j);
                 j--;
             }

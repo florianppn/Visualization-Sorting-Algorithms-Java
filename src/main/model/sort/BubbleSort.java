@@ -28,7 +28,9 @@ public class BubbleSort implements SortingStrategy {
             swapped = false;
             // Boucle interne pour comparer les éléments adjacents.
             for (int j = 0; j < n - i - 1; j++) {
-                if (sortingArray.getElement(j) > sortingArray.getElement(j + 1)) {
+                int elt1 = sortingArray.getElement(j);
+                int elt2 = sortingArray.getElement(j + 1);
+                if (sortingArray.compare(elt1, elt2) > 0) {
                     sortingArray.swap(j, j + 1);
                     swapped = true;
                 }

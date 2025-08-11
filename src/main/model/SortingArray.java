@@ -46,9 +46,13 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
     }
 
     public Integer getElement(int i) {
-        this.comparisons++;
         this.arrayAccess++;
         return this.generatorData[i];
+    }
+
+    public int compare(int i, int j) {
+        this.comparisons++;
+        return Integer.compare(i, j);
     }
 
     public int getCurrent1() {
@@ -102,10 +106,6 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.current2 = current2;
     }
 
-    public void setDelay(long delay) {
-        this.delay = delay;
-    }
-
     /**
      * Définit la valeur de l'élément à l'indice i.
      *
@@ -130,7 +130,7 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
             int tmp = this.generatorData[i];
             this.generatorData[i] = this.generatorData[j];
             this.generatorData[j] = tmp;
-            this.arrayAccess += 2;
+            this.arrayAccess+=4;
             this.setCurrent1(i);
             this.setCurrent2(j);
             this.fireChange("step");
