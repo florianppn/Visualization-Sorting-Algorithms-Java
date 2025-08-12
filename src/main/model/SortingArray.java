@@ -133,15 +133,13 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
      * @param j élément j à échanger.
      */
     public void swap(int i, int j) {
-        if (i != j) {
-            int tmp = this.generatorData[i];
-            this.generatorData[i] = this.generatorData[j];
-            this.generatorData[j] = tmp;
-            this.arrayAccess+=4;
-            this.setCurrent1(i);
-            this.setCurrent2(j);
-            this.fireChange("step");
-        }
+        int tmp = this.generatorData[i];
+        this.generatorData[i] = this.generatorData[j];
+        this.generatorData[j] = tmp;
+        this.arrayAccess+=4;
+        this.setCurrent1(i);
+        this.setCurrent2(j);
+        this.fireChange("step");
     }
 
     @Override
@@ -152,7 +150,7 @@ public class SortingArray extends AbstractListenableModel implements Runnable {
         this.delay = (endTime - startTime) / 1000000.0;
         this.setCurrent1(-1);
         this.setCurrent2(-1);
-        this.fireChange("step");
+        this.fireChange("end");
         this.comparisons = 0;
         this.arrayAccess = 0;
     }

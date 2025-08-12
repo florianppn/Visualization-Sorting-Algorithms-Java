@@ -27,7 +27,7 @@ public class SelectionSort implements SortingStrategy {
                     minIndex = j;
                 }
             }
-            if (minIndex != i) sortingArray.swap(i, minIndex);
+            sortingArray.swap(i, minIndex);
         }
     }
 }
