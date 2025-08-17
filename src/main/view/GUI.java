@@ -66,7 +66,8 @@ public class GUI extends JFrame {
         this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        this.refresh();
+        this.showActionPanel();
+        this.showAnimation();
         this.setVisible(true);
     }
 
@@ -79,20 +80,9 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Permet de rafraîchir l'interface graphique.
-     */
-    public void refresh() {
-        this.getContentPane().removeAll();
-        this.showActionPanel();
-        this.showAnimation();
-        this.revalidate();
-        this.repaint();
-    }
-
-    /**
      * Permet d'afficher le panneau d'action.
      */
-    public void showActionPanel() {
+    private void showActionPanel() {
         JPanel actionPanel = new JPanel();
         JPanel menuPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
@@ -128,7 +118,7 @@ public class GUI extends JFrame {
     /**
      * Permet d'afficher l'animation.
      */
-    public void showAnimation() {
+    private void showAnimation() {
         JPanel sortPanel = new JPanel();
         sortPanel.setBackground(Color.BLACK);
         sortPanel.setLayout(new BorderLayout());
